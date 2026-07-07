@@ -1,0 +1,2889 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Night</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+  @import url('https://cdn.jsdelivr.net/npm/@fontsource/orbitron@5.0.13/index.css');
+  :root{
+    --bg:#0b0a13;
+    --bg2:#15121f;
+    --card:#1a1626;
+    --card2:#211c30;
+    --accent:#ff6b4a;
+    --accent2:#ffb14d;
+    --neon:#e8ff3d;
+    --purple:#8b6bff;
+    --purple2:#4f2fd9;
+    --pink:#ff4fa3;
+    --text:#f5f2ff;
+    --muted:#9a8fc2;
+    --line:#2a2340;
+  }
+  *{box-sizing:border-box;}
+  ::selection{background:var(--accent);color:#1a0e05;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 100% -10%, rgba(139,107,255,.25), transparent 60%),
+      radial-gradient(700px 400px at -10% 20%, rgba(255,107,74,.12), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Vazirmatn','Tahoma',sans-serif;
+    min-height:100vh;
+    padding-bottom:90px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--purple2) 0%, var(--purple) 55%, var(--pink) 130%);
+    padding:26px 20px 34px;
+    position:relative;
+    overflow:hidden;
+    border-radius:0 0 28px 28px;
+    box-shadow:0 12px 30px -12px rgba(79,47,217,.55);
+  }
+  header::before{
+    content:"アニメ";
+    position:absolute; left:-6px; bottom:-18px;
+    font-size:74px; font-weight:900; letter-spacing:2px;
+    color:rgba(255,255,255,.07);
+    font-family:sans-serif;
+  }
+  header::after{
+    content:"";
+    position:absolute;inset:0;
+    background:radial-gradient(circle at 85% 0%, rgba(255,255,255,.2), transparent 55%);
+  }
+  .brand{
+    font-size:28px;font-weight:900;letter-spacing:.3px;position:relative;z-index:1;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2);}
+  .brand span{color:var(--accent2);}
+  .tagline{color:#ece7ff;font-size:13px;margin-top:6px;position:relative;z-index:1;opacity:.9;}
+
+  /* Netflix-style hero + rows */
+  .hero-brand{font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+  .hero{
+    position:relative;z-index:1;margin-bottom:18px;padding:22px 4px 6px;
+  }
+  .hero h2{
+    font-size:22px;margin:0 0 6px;font-weight:800;
+    text-shadow:0 0 18px rgba(232,255,61,.35);
+  }
+  .hero .neon-tag{
+    display:inline-block;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px;
+    color:var(--neon);border:1px solid var(--neon);border-radius:999px;padding:4px 10px;margin-bottom:10px;
+    box-shadow:0 0 12px rgba(232,255,61,.35) inset;
+  }
+  .row-title{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 10px;}
+  .row-title h3{margin:0;font-size:16px;font-weight:800;}
+  .row-title span{font-size:12px;color:var(--muted);}
+  .hscroll{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;}
+  .hscroll::-webkit-scrollbar{height:0;}
+  .neon-card{
+    flex:0 0 128px;scroll-snap-align:start;
+    background:linear-gradient(160deg, var(--card2), var(--bg2));
+    border:1px solid var(--line);border-radius:14px;padding:12px 10px;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    cursor:pointer;
+  }
+  .neon-card:hover, .neon-card:active{
+    transform:translateY(-4px) scale(1.04);
+    border-color:var(--neon);
+    box-shadow:0 10px 24px -8px rgba(232,255,61,.35);
+  }
+  .neon-card .thumb{
+    width:100%;aspect-ratio:2/3;border-radius:10px;margin-bottom:8px;
+    display:flex;align-items:center;justify-content:center;font-size:30px;
+    background:linear-gradient(135deg,var(--purple2),var(--pink));
+  }
+  .neon-card .cap{font-size:12px;font-weight:700;line-height:1.4;}
+  .neon-card .sub{font-size:10px;color:var(--muted);margin-top:3px;}
+
+  footer.app-footer{
+    max-width:520px;margin:26px auto 10px;padding:18px 16px 0;
+    border-top:1px solid var(--line);text-align:center;
+  }
+  footer.app-footer .flinks{display:flex;justify-content:center;gap:16px;margin-bottom:10px;flex-wrap:wrap;font-size:12px;color:var(--muted);}
+  footer.app-footer .ficons{display:flex;justify-content:center;gap:12px;margin-bottom:10px;}
+  footer.app-footer .ficons span{
+    width:34px;height:34px;border-radius:50%;background:var(--card2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;
+  }
+  footer.app-footer .fcopy{font-size:11px;color:var(--muted);opacity:.7;}
+
+  /* Responsive: laptop / desktop screens */
+  @media (min-width: 860px){
+    main, header > div, footer.app-footer{max-width:900px;}
+    header{padding:30px 40px 40px;}
+    .stat-grid{grid-template-columns:repeat(4,1fr);}
+    #g2048, #memGrid{max-width:420px;}
+    #tttGrid{max-width:320px;}
+    #reflexGrid{max-width:340px;}
+    nav.bottom{max-width:640px;left:50%;right:auto;transform:translateX(-50%);}
+    .neon-card{flex:0 0 150px;}
+  }
+  @media (min-width: 1200px){
+    main, footer.app-footer{max-width:1100px;}
+  }
+
+  main{padding:18px 16px;max-width:520px;margin:0 auto;}
+  .tab{display:none;animation:fade .3s ease;}
+  .tab.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:linear-gradient(180deg, var(--card), var(--card2));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px -10px rgba(0,0,0,.5);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .card h3{margin:0 0 6px;font-size:17px;font-weight:800;}
+  .card p{margin:0;color:var(--muted);font-size:13px;line-height:1.8;}
+  .row{display:flex;gap:10px;align-items:center;}
+  .pill{
+    background:var(--card2);border:1px solid var(--line);
+    color:var(--text);border-radius:999px;padding:8px 14px;font-size:13px;
+    cursor:pointer;user-select:none;transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--accent);}
+  .pill.on{background:var(--accent);border-color:var(--accent);color:#1a0e05;font-weight:700;}
+  .adm-nav{flex-shrink:0;}
+  .btn{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:#1a0e05;border:none;border-radius:12px;padding:11px 18px;
+    font-weight:800;font-size:14px;cursor:pointer;
+    box-shadow:0 8px 20px -8px rgba(255,107,74,.55);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:700;box-shadow:none;}
+  input,textarea{
+    width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--text);
+    border-radius:12px;padding:11px 14px;font-family:inherit;font-size:14px;outline:none;
+    transition:border-color .15s ease;
+  }
+  input:focus,textarea:focus{border-color:var(--purple);}
+  .list-item{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:9px;
+  }
+  .muted-small{color:var(--muted);font-size:12px;}
+
+  /* bottom nav */
+  nav.bottom{
+    position:fixed;bottom:12px;left:12px;right:12px;
+    background:rgba(21,18,31,.9);backdrop-filter:blur(14px);
+    border:1px solid var(--line);
+    border-radius:20px;
+    display:flex;justify-content:space-around;padding:10px 6px;
+    z-index:50;
+    box-shadow:0 14px 34px -14px rgba(0,0,0,.65);
+  }
+  nav.bottom .item{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    color:var(--muted);font-size:11px;cursor:pointer;flex:1;
+    padding:4px 0; border-radius:12px; transition:all .15s ease;
+  }
+  nav.bottom .item.active{color:var(--accent2);background:rgba(255,177,77,.1);}
+  nav.bottom .icon{font-size:16px;}
+
+  /* game grid */
+  .game-tile{
+    display:flex;align-items:center;gap:14px;
+    background:linear-gradient(135deg, var(--card2), var(--card));
+    border-radius:16px;padding:15px;margin-bottom:11px;
+    cursor:pointer;border:1px solid var(--line);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .game-tile:active{transform:scale(.98);}
+  .game-tile:hover{border-color:var(--purple);}
+  .game-tile .emoji{font-size:20px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg, var(--purple2), var(--purple));border-radius:11px;
+    box-shadow:0 6px 16px -6px rgba(139,107,255,.6);}
+  .game-tile .info h4{margin:0;font-size:15px;font-weight:800;}
+  .game-tile .info p{margin:3px 0 0;font-size:12px;color:var(--muted);}
+
+  .game-screen{background:var(--card);border-radius:16px;padding:14px;}
+  .back-btn{color:var(--accent2);font-size:14px;margin-bottom:10px;cursor:pointer;display:inline-block;}
+
+  /* 2048 */
+  #g2048{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:0 auto;}
+  .cell2048{
+    aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:20px;
+  }
+  /* memory */
+  #memGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:0 auto;}
+  .memCard{aspect-ratio:1;background:var(--bg2);border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:24px;cursor:pointer;}
+  .memCard.flipped, .memCard.matched{background:var(--purple);}
+
+  /* tictactoe */
+  #tttGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:0 auto;}
+  .tttCell{aspect-ratio:1;background:var(--bg2);border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-size:32px;font-weight:800;cursor:pointer;}
+
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-box{background:var(--card2);border-radius:14px;padding:14px;text-align:center;}
+  .stat-box .num{font-size:24px;font-weight:800;color:var(--accent2);}
+  .stat-box .lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  a.src{color:var(--accent2);text-decoration:none;font-size:12px;}
+  .notice{
+    background:rgba(255,122,61,.1);border:1px solid rgba(255,122,61,.35);
+    border-radius:12px;padding:10px 12px;font-size:12px;color:#ffcba6;margin-bottom:14px;
+  }
+  .chat-bubble{max-width:82%;padding:10px 14px;border-radius:14px;margin-bottom:8px;font-size:13px;line-height:1.8;}
+  .chat-bubble.user{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#1a0e05;margin-right:auto;margin-left:0;font-weight:600;}
+  .chat-bubble.bot{background:var(--card2);border:1px solid var(--line);margin-left:auto;margin-right:0;}
+  .chat-bubble.bot.loading{color:var(--muted);}
+  .reel-card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:16px;}
+  .reel-embed{width:100%;aspect-ratio:9/16;background:#000;max-height:520px;}
+  .reel-body{padding:12px 14px;}
+  .reel-body p{margin:0 0 8px;font-size:13px;color:var(--text);}
+  .reel-actions{display:flex;gap:12px;align-items:center;}
+  .like-btn{cursor:pointer;font-size:14px;color:var(--muted);user-select:none;}
+  .like-btn.liked{color:var(--accent);}
+
+  /* theme swatches */
+  .theme-panel{display:none;gap:8px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:1;}
+  .theme-panel.open{display:flex;}
+  .swatch{width:42px;height:42px;border-radius:13px;cursor:pointer;border:2px solid rgba(255,255,255,.25);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;}
+  .swatch.active{border-color:#fff;transform:scale(1.08);}
+
+  /* matrix rain canvas */
+  #matrixCanvas{position:fixed;inset:0;z-index:0;opacity:0;pointer-events:none;transition:opacity .4s ease;}
+  #matrixCanvas.on{opacity:.55;}
+  main, header, nav.bottom{position:relative;z-index:1;}
+
+  /* bot avatar */
+  .bot-avatar{
+    width:42px;height:42px;border-radius:50%;flex-shrink:0;
+    background:conic-gradient(from 180deg, var(--purple), var(--pink), var(--accent2), var(--purple));
+    display:flex;align-items:center;justify-content:center;font-size:19px;
+    animation:spin-hue 5s linear infinite; box-shadow:0 0 18px rgba(139,107,255,.55);
+  }
+  @keyframes spin-hue{from{filter:hue-rotate(0deg);}to{filter:hue-rotate(360deg);}}
+  .chat-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:10px;}
+  .chat-row.user-row{flex-direction:row-reverse;}
+
+  /* forum avatar */
+  .post-avatar{width:34px;height:34px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;color:#fff;}
+  .post-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .post-like{cursor:pointer;color:var(--muted);font-size:13px;user-select:none;}
+  .post-like.liked{color:var(--accent);}
+
+  /* 3D memory flip */
+  #memGrid{perspective:800px;}
+  .memCard{aspect-ratio:1;background:transparent!important;cursor:pointer;perspective:600px;}
+  .memCard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+  .memCard.flipped .memCard-inner, .memCard.matched .memCard-inner{transform:rotateY(180deg);}
+  .memCard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .memCard-front{background:var(--bg2);}
+  .memCard-back{background:var(--purple);transform:rotateY(180deg);}
+
+  /* snake */
+  #snakeCanvas{background:var(--bg2);border-radius:12px;display:block;margin:0 auto;touch-action:none;max-width:100%;}
+
+  /* simon */
+  #simonGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:260px;margin:0 auto;}
+  .simonPad{aspect-ratio:1;border-radius:16px;cursor:pointer;opacity:.55;transition:opacity .1s, transform .1s;}
+  .simonPad.lit{opacity:1;box-shadow:0 0 30px currentColor;transform:scale(.96);}
+  #settingsPanel{margin-top:12px;}
+  .quizOption{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-size:14px;transition:all .15s ease;}
+  .quizOption.correct{background:#1f6b3a;border-color:#2fae5c;}
+  .quizOption.wrong{background:#6b1f1f;border-color:#ae2f2f;}
+  #reflexGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:280px;margin:0 auto;}
+  .reflexCell{aspect-ratio:1;background:var(--bg2);border-radius:14px;cursor:pointer;transition:all .1s ease;}
+  .reflexCell.active{background:var(--accent);box-shadow:0 0 20px var(--accent);}
+  .real-result{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;}
+  .real-result img{width:40px;height:56px;object-fit:cover;border-radius:6px;flex-shrink:0;}
+  .auth-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:radial-gradient(700px 500px at 50% 0%, rgba(139,107,255,.25), transparent 60%), var(--bg);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .auth-box{
+    width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:26px 22px;box-shadow:0 20px 50px -18px rgba(0,0,0,.6);
+  }
+
+  /* Skeleton loading */
+  .skeleton{
+    background:linear-gradient(90deg, var(--card2) 25%, var(--line) 37%, var(--card2) 63%);
+    background-size:400% 100%;
+    animation:skeletonShine 1.4s ease infinite;
+  }
+  @keyframes skeletonShine{0%{background-position:100% 50%;}100%{background-position:0 50%;}}
+  .skeleton-card{pointer-events:none;}
+
+  /* Advanced search filters */
+  .filter-select{
+    background:var(--bg2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:8px 10px;font-family:inherit;font-size:12px;flex:1;min-width:110px;
+  }
+  .filter-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:9px 2px;border-bottom:1px solid var(--line);
+  }
+  .filter-row:last-of-type{border-bottom:none;}
+  .filter-row span{font-size:13px;color:var(--text);flex-shrink:0;}
+  .filter-row select{max-width:160px;}
+  .see-all{font-size:12px;color:var(--accent2);cursor:pointer;}
+
+  /* Notifications dropdown */
+  .notif-panel{
+    display:none;position:absolute;top:66px;left:20px;width:260px;max-height:300px;overflow-y:auto;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:0 16px 40px -14px rgba(0,0,0,.6);z-index:60;
+  }
+  .notif-panel.open{display:block;}
+  .notif-item{padding:10px 14px;font-size:12px;border-top:1px solid var(--line);color:var(--text);line-height:1.7;}
+
+  /* Release calendar */
+  .calendar-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+  .calendar-item:last-child{border-bottom:none;}
+  .calendar-item img{width:40px;height:56px;object-fit:cover;border-radius:6px;flex-shrink:0;}
+
+  /* Anime detail full-screen page */
+  .detail-overlay{
+    display:none;position:fixed;inset:0;z-index:150;background:var(--bg);overflow-y:auto;
+  }
+  .detail-sheet{max-width:520px;margin:0 auto;padding:18px 16px 40px;}
+  @media (min-width:860px){ .detail-sheet{max-width:900px;} }
+  .browse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media (min-width:600px){ .browse-grid{grid-template-columns:repeat(4,1fr);} }
+  @media (min-width:860px){ .browse-grid{grid-template-columns:repeat(6,1fr);} }
+  .browse-grid .neon-card{flex:none;width:auto;}
+
+  .announce-banner{
+    background:linear-gradient(90deg, var(--purple2), var(--pink));
+    border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:13px;font-weight:700;
+    display:flex;align-items:center;gap:8px;
+  }
+  .featured-card{
+    display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,var(--card2),var(--card));
+    border:1px solid var(--neon);border-radius:16px;padding:14px;margin-bottom:16px;cursor:pointer;
+  }
+  .featured-card img{width:64px;height:88px;object-fit:cover;border-radius:10px;flex-shrink:0;}
+  .featured-card .tag{font-size:11px;color:var(--neon);font-weight:800;margin-bottom:4px;}
+
+</style>
+</head>
+<body>
+
+<div id="authOverlay" class="auth-overlay">
+  <div class="auth-box">
+    <div class="brand hero-brand" style="justify-content:center;display:flex;margin-bottom:4px;"><span class="dot"></span>Anime<span> Night</span></div>
+    <h3 id="authTitle" style="text-align:center;margin:6px 0 16px;">ثبت‌نام</h3>
+    <input id="authEmail" type="email" placeholder="ایمیل" style="margin-bottom:10px;" />
+    <input id="authPass" type="password" placeholder="رمز عبور" style="margin-bottom:6px;" />
+    <p id="authError" style="color:#ff8080;font-size:12px;min-height:16px;margin:4px 0 10px;"></p>
+    <button class="btn" id="authSubmitBtn" style="width:100%;" onclick="submitAuth()">ثبت‌نام</button>
+    <p id="authSwitchText" class="muted-small" style="text-align:center;margin-top:14px;">
+      حساب داری؟ <span onclick="switchAuthMode('login')" style="color:var(--accent2);cursor:pointer;">وارد شو</span>
+    </p>
+    <p class="muted-small" style="text-align:center;margin-top:10px;opacity:.75;">فقط رو همین مرورگر/دستگاه ذخیره میشه؛ سیستم ورود امن چند-دستگاهی نیست.</p>
+  </div>
+</div>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div id="detailOverlay" class="detail-overlay">
+  <div class="detail-sheet">
+    <span class="back-btn" onclick="closeDetail()">← بازگشت</span>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<div id="browseOverlay" class="detail-overlay">
+  <div class="detail-sheet">
+    <span class="back-btn" onclick="closeBrowse()">← بازگشت</span>
+    <h2 id="browseTitle" style="margin:0 0 14px;font-size:19px;"></h2>
+    <div class="browse-grid" id="browseGrid"></div>
+    <button class="btn" id="browseMoreBtn" style="width:100%;margin-top:14px;" onclick="loadBrowsePage(false)">بارگذاری بیشتر</button>
+  </div>
+</div>
+
+<div id="subOverlay" class="detail-overlay">
+  <div class="detail-sheet">
+    <span class="back-btn" onclick="closeSubOverlay()">← بازگشت</span>
+    <h2 style="margin:0 0 6px;font-size:19px;">💎 اشتراک ویژه</h2>
+    <p class="muted-small" style="margin-bottom:16px;">با اشتراک ویژه، امکانات اختصاصی سایت رو باز کن.</p>
+    <div id="subCurrentBox"></div>
+    <div id="subPlansBox"></div>
+  </div>
+</div>
+
+<div id="payOverlay" class="detail-overlay" style="z-index:250;">
+  <div class="detail-sheet" style="max-width:360px;padding-top:60px;">
+    <span class="back-btn" onclick="closePayOverlay()">← بازگشت</span>
+    <div class="card">
+      <h3 id="payPlanTitle">تکمیل خرید</h3>
+      <p class="muted-small" id="payPlanDesc"></p>
+      <input id="payCardNumber" placeholder="شماره کارت (آزمایشی، هر عددی)" style="margin-bottom:8px;" />
+      <div class="row">
+        <input id="payCardExp" placeholder="MM/YY" />
+        <input id="payCardCvv" placeholder="CVV" />
+      </div>
+      <p class="muted-small" style="margin:8px 0;">🧪 این یک درگاه پرداخت آزمایشی است؛ هیچ پول واقعی کم نمی‌شود. بعداً می‌توان درگاه واقعی جایگزین کرد.</p>
+      <p id="payError" style="color:#ff8080;font-size:12px;min-height:14px;"></p>
+      <button class="btn" style="width:100%;" onclick="confirmMockPayment()">پرداخت و فعال‌سازی</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="row" style="justify-content:space-between;">
+    <div class="brand hero-brand" id="mainLogo"><span class="dot"></span>Anime<span> Night</span></div>
+    <div class="row" style="gap:8px;">
+      <div class="pill" id="notifBellBtn" onclick="toggleNotifPanel()" style="background:rgba(255,255,255,.15);border-color:transparent;position:relative;">
+        🔔
+        <span id="notifBadge" style="display:none;position:absolute;top:-6px;left:-6px;background:var(--accent);color:#1a0e05;font-size:10px;font-weight:800;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;">0</span>
+      </div>
+      <div class="pill" id="themeBtn" onclick="toggleThemePanel()" style="background:rgba(255,255,255,.15);border-color:transparent;">🎨 تم</div>
+    </div>
+  </div>
+  <div class="tagline">پیگیری، بازی، گفتگو و اخبار انیمه — یه‌جا</div>
+  <div class="theme-panel" id="themePanel"></div>
+  <div class="notif-panel" id="notifPanel">
+    <div class="muted-small" style="padding:10px 14px 4px;font-weight:700;color:var(--text);">🔔 اعلان‌ها</div>
+    <div id="notifList"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HOME -->
+  <section class="tab active" id="tab-home">
+    <div class="hero">
+      <span class="neon-tag">⚡ OTAKU MODE: ON</span>
+      <h2 class="hero-brand">Anime Night 🎌</h2>
+      <p class="muted-small">لیست، بازی، انجمن و دستیار — همه‌جا همراهته</p>
+    </div>
+
+    <div id="announceBanner" style="display:none;"></div>
+    <div id="featuredBox" style="display:none;"></div>
+
+    <div class="card search-card">
+      <h3>🔍 جستجوی حرفه‌ای انیمه</h3>
+      <p>مستقیم از دیتابیس واقعی AniList جستجو کن، فیلتر کن و به لیستت اضافه کن.</p>
+      <div class="row" style="margin-top:10px;">
+        <input id="realSearchInput" placeholder="اسم انیمه رو بنویس..." />
+        <button class="btn" onclick="searchRealAnime()">جستجو</button>
+      </div>
+
+      <div class="filter-row"><span>نوع</span><div class="row" style="gap:6px;"><span class="pill on" id="typeAnimeBtn" onclick="setMediaType('ANIME')">انیمه</span><span class="pill" id="typeMangaBtn" onclick="setMediaType('MANGA')">مانگا</span></div></div>
+      <div class="filter-row"><span>ژانر</span><select id="filterGenre" class="filter-select">
+        <option value="">همه</option>
+        <option value="Action">اکشن</option>
+        <option value="Adventure">ماجراجویی</option>
+        <option value="Comedy">کمدی</option>
+        <option value="Drama">درام</option>
+        <option value="Fantasy">فانتزی</option>
+        <option value="Horror">ترسناک</option>
+        <option value="Romance">عاشقانه</option>
+        <option value="Sci-Fi">علمی‌تخیلی</option>
+        <option value="Slice of Life">زندگی روزمره</option>
+        <option value="Sports">ورزشی</option>
+        <option value="Mystery">معمایی</option>
+        <option value="Supernatural">ماوراءالطبیعه</option>
+      </select></div>
+      <div class="filter-row"><span>کشور سازنده</span><select id="filterCountry" class="filter-select"><option value="">همه</option><option value="JP">ژاپن</option><option value="KR">کره</option><option value="CN">چین</option></select></div>
+      <div class="filter-row"><span>وضعیت پخش</span><select id="filterStatus" class="filter-select"><option value="">همه</option><option value="RELEASING">در حال پخش</option><option value="FINISHED">تمام‌شده</option><option value="NOT_YET_RELEASED">هنوز پخش نشده</option></select></div>
+      <div class="filter-row"><span>سال</span><select id="filterYear" class="filter-select"><option value="">همه</option></select></div>
+      <div class="filter-row"><span>حداقل امتیاز</span><select id="filterScore" class="filter-select"><option value="">همه</option><option value="90">۹+ ⭐</option><option value="80">۸+ ⭐</option><option value="70">۷+ ⭐</option></select></div>
+      <div class="filter-row"><span>مرتب‌سازی</span><select id="filterSort" class="filter-select"><option value="POPULARITY_DESC">محبوب‌ترین</option><option value="SCORE_DESC">بالاترین امتیاز</option><option value="START_DATE_DESC">جدیدترین</option><option value="TRENDING_DESC">پرطرفدار الان</option></select></div>
+
+      <button class="btn" style="width:100%;margin-top:10px;" onclick="searchRealAnime()">اعمال فیلتر و جستجو</button>
+      <p class="muted-small" id="filterNote" style="margin-top:8px;">ℹ️ فیلتر «پخش آنلاین» اینجا نیست، چون این سایت پخش‌کننده نیست و فقط اطلاعات و جامعه‌ی طرفدارهاست.</p>
+      <div id="realSearchResults" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="row-title"><h3>🔴 در حال پخش</h3><span class="see-all" onclick="openBrowseAll('RELEASING','در حال پخش')">مشاهده همه ←</span></div>
+    <div class="hscroll" id="airingHscroll"><p class="muted-small">در حال دریافت...</p></div>
+
+    <div class="row-title"><h3>🔜 به‌زودی</h3><span class="see-all" onclick="openBrowseAll('NOT_YET_RELEASED','به‌زودی')">مشاهده همه ←</span></div>
+    <div class="hscroll" id="upcomingHscroll"><p class="muted-small">در حال دریافت...</p></div>
+
+    <div class="row-title"><h3>📅 تقویم پخش قسمت‌های جدید</h3><span class="muted-small">داده‌ی واقعی</span></div>
+    <div class="card" id="calendarList"><p class="muted-small">در حال دریافت...</p></div>
+
+    <div class="row-title"><h3>🕑 ادامه‌ی تماشا</h3><span class="muted-small">بازدید اخیر</span></div>
+    <div class="hscroll" id="historyHscroll"><p class="muted-small">هنوز چیزی ندیدی.</p></div>
+
+    <div class="card">
+      <h3>📥 درخواست انیمه</h3>
+      <p>یه انیمه پیشنهاد بده تا بقیه رای بدن.</p>
+      <div class="row" style="margin-top:10px;">
+        <input id="reqInput" placeholder="اسم انیمه‌ی پیشنهادی..." />
+        <button class="btn" onclick="addRequest()">ثبت</button>
+      </div>
+      <div id="reqList" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>لیست تماشای من</h3>
+      <p>اسم انیمه رو اضافه کن تا وضعیتشو پیگیری کنی.</p>
+      <div class="row" style="margin-top:10px;">
+        <input id="animeInput" placeholder="مثلا: بلیچ" />
+        <select id="genreInput" style="background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 8px;font-family:inherit;">
+          <option value="اکشن">اکشن</option>
+          <option value="فانتزی">فانتزی</option>
+          <option value="رمانتیک">رمانتیک</option>
+          <option value="کمدی">کمدی</option>
+          <option value="ترسناک">ترسناک</option>
+        </select>
+        <button class="btn" onclick="addAnime()">افزودن</button>
+      </div>
+      <input id="animeSearch" placeholder="🔍 جستجو تو لیست..." style="margin-top:10px;" oninput="renderAnime()" />
+      <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:6px;" id="genreFilters">
+        <span class="pill on" data-genre="همه" onclick="setGenreFilter('همه')">همه</span>
+        <span class="pill" data-genre="اکشن" onclick="setGenreFilter('اکشن')">اکشن</span>
+        <span class="pill" data-genre="فانتزی" onclick="setGenreFilter('فانتزی')">فانتزی</span>
+        <span class="pill" data-genre="رمانتیک" onclick="setGenreFilter('رمانتیک')">رمانتیک</span>
+        <span class="pill" data-genre="کمدی" onclick="setGenreFilter('کمدی')">کمدی</span>
+        <span class="pill" data-genre="ترسناک" onclick="setGenreFilter('ترسناک')">ترسناک</span>
+      </div>
+      <div id="animeList" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card">
+      <h3>اخبار انیمه</h3>
+      <div id="newsList"></div>
+    </div>
+
+    <div class="row-title"><h3>🎮 بازی‌های Anime Night</h3><span onclick="showTab('games')" style="cursor:pointer;">همه ←</span></div>
+    <div class="hscroll" id="gameHscroll"></div>
+
+    <div class="row-title"><h3>📺 لیست تماشای من</h3><span onclick="showTab('profile')" style="cursor:pointer;">پروفایل ←</span></div>
+    <div class="hscroll" id="animeHscroll"></div>
+  </section>
+
+  <!-- GAME HUB -->
+  <section class="tab" id="tab-games">
+    <div id="gameHubList">
+      <div class="game-tile" onclick="openGame('g2048view')">
+        <div class="emoji">🔢</div>
+        <div class="info"><h4>۲۰۴۸</h4><p>کاشی‌ها رو ادغام کن و به ۲۰۴۸ برس</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('memview')">
+        <div class="emoji">🃏</div>
+        <div class="info"><h4>حافظه</h4><p>کارت‌های جفت رو پیدا کن</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('tttview')">
+        <div class="emoji">⭕</div>
+        <div class="info"><h4>دوز</h4><p>با یه دوست یا خودت بازی کن</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('snakeview')">
+        <div class="emoji">🐍</div>
+        <div class="info"><h4>مار</h4><p>مار رو هدایت کن، به دیوار و خودت نخور</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('simonview')">
+        <div class="emoji">🎯</div>
+        <div class="info"><h4>توالی</h4><p>ترتیب روشن‌شدن رنگ‌ها رو حفظ کن</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('quizview')">
+        <div class="emoji">🧠</div>
+        <div class="info"><h4>آزمون انیمه</h4><p>معلوماتتو درباره‌ی دنیای انیمه محک بزن</p></div>
+      </div>
+      <div class="game-tile" onclick="openGame('reflexview')">
+        <div class="emoji">⚡</div>
+        <div class="info"><h4>واکنش سریع</h4><p>قبل تموم‌شدن وقت، خونه‌ی روشن رو بزن</p></div>
+      </div>
+    </div>
+
+    <div id="g2048view" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px;">
+        <h3 style="margin:0;">۲۰۴۸</h3>
+        <div class="pill" id="scoreLabel">امتیاز: 0</div>
+      </div>
+      <div id="g2048"></div>
+      <p class="muted-small" style="margin-top:10px;text-align:center;">با کیبورد (فلش‌ها) یا دکمه‌ها بازی کن</p>
+      <div class="row" style="justify-content:center;margin-top:10px;">
+        <button class="btn ghost" onclick="move2048('up')">▲</button>
+        <button class="btn ghost" onclick="move2048('down')">▼</button>
+        <button class="btn ghost" onclick="move2048('right')">◀</button>
+        <button class="btn ghost" onclick="move2048('left')">▶</button>
+      </div>
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="initGame2048()">شروع دوباره</button>
+    </div>
+
+    <div id="memview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <h3 style="margin:0 0 10px;">بازی حافظه</h3>
+      <div id="memGrid"></div>
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="initMemory()">شروع دوباره</button>
+    </div>
+
+    <div id="tttview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <h3 style="margin:0 0 4px;">دوز</h3>
+      <p class="muted-small" id="tttStatus">نوبت: ✕</p>
+      <div id="tttGrid"></div>
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="initTTT()">شروع دوباره</button>
+    </div>
+
+    <div id="snakeview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px;">
+        <h3 style="margin:0;">مار</h3>
+        <div class="pill" id="snakeScoreLabel">امتیاز: 0</div>
+      </div>
+      <canvas id="snakeCanvas" width="300" height="300"></canvas>
+      <div class="row" style="justify-content:center;margin-top:10px;">
+        <button class="btn ghost" onclick="setSnakeDir('up')">▲</button>
+        <button class="btn ghost" onclick="setSnakeDir('down')">▼</button>
+        <button class="btn ghost" onclick="setSnakeDir('right')">◀</button>
+        <button class="btn ghost" onclick="setSnakeDir('left')">▶</button>
+      </div>
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="initSnake()">شروع دوباره</button>
+    </div>
+
+    <div id="simonview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <h3 style="margin:0 0 6px;">توالی</h3>
+      <p class="muted-small" id="simonStatus">برای شروع، لمس کن</p>
+      <div id="simonGrid"></div>
+      <button class="btn" style="margin-top:14px;width:100%;" onclick="initSimon()">شروع دوباره</button>
+    </div>
+
+    <div id="quizview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <div class="row" style="justify-content:space-between;margin-bottom:12px;">
+        <h3 style="margin:0;">آزمون انیمه</h3>
+        <div class="pill" id="quizScoreLabel">امتیاز: 0</div>
+      </div>
+      <p id="quizQuestion" style="margin-bottom:14px;font-weight:700;"></p>
+      <div id="quizOptions"></div>
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="initQuiz()">شروع دوباره</button>
+    </div>
+
+    <div id="reflexview" style="display:none;" class="game-screen">
+      <span class="back-btn" onclick="backToHub()">← بازگشت</span>
+      <div class="row" style="justify-content:space-between;margin-bottom:12px;">
+        <h3 style="margin:0;">واکنش سریع</h3>
+        <div class="row" style="gap:8px;">
+          <div class="pill" id="reflexScoreLabel">امتیاز: 0</div>
+          <div class="pill" id="reflexTimeLabel">⏱ 20</div>
+        </div>
+      </div>
+      <div id="reflexGrid"></div>
+      <button class="btn" style="margin-top:14px;width:100%;" onclick="initReflex()">شروع دوباره</button>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="tab" id="tab-profile">
+    <div class="card">
+      <div class="row">
+        <div id="profAvatarLetter" style="width:52px;height:52px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">A</div>
+        <div><h3 id="profDisplayName" style="margin:0;">پروفایل من</h3><p class="muted-small" id="profDisplayEmail">عضو Anime Night</p></div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="num" id="statFav">0</div><div class="lbl">علاقه‌مندی</div></div>
+      <div class="stat-box"><div class="num" id="statPosts">0</div><div class="lbl">پست‌های من</div></div>
+      <div class="stat-box"><div class="num" id="statWins">0</div><div class="lbl">برد در بازی‌ها</div></div>
+      <div class="stat-box"><div class="num" id="statAnime">0</div><div class="lbl">انیمه در لیست</div></div>
+    </div>
+
+    <div class="card" style="border:1px solid var(--neon);" id="premiumCard">
+      <h3>💎 اشتراک ویژه</h3>
+      <p id="premiumStatusText">در حال بررسی وضعیت اشتراک...</p>
+      <button class="btn" style="width:100%;margin-top:8px;" onclick="openSubOverlay()">مدیریت / خرید اشتراک</button>
+    </div>
+
+    <div class="card">
+      <h3>🎫 پشتیبانی و درخواست</h3>
+      <p class="muted-small">گزارش باگ، پیشنهاد یا تماس با تیم Anime Night.</p>
+      <select id="ticketType" class="filter-select" style="width:100%;margin-bottom:8px;">
+        <option value="bug">گزارش باگ</option>
+        <option value="suggestion">پیشنهاد</option>
+        <option value="contact">تماس با ما</option>
+      </select>
+      <textarea id="ticketMsg" rows="3" placeholder="متن پیام..."></textarea>
+      <button class="btn" style="width:100%;margin-top:8px;" onclick="submitTicket()">ارسال تیکت</button>
+    </div>
+    <div class="card" id="settingsPanel">
+      <h3>⚙️ تنظیمات پروفایل</h3>
+      <input id="profName" placeholder="اسمت..." style="margin-bottom:8px;" />
+      <input id="profEmail" type="email" placeholder="ایمیلت (اختیاری)" />
+      <button class="btn" style="margin-top:10px;width:100%;" onclick="saveProfile()">ذخیره</button>
+      <button class="btn ghost" style="margin-top:8px;width:100%;" onclick="logout()">خروج از حساب</button>
+      <p class="muted-small" style="margin-top:8px;">فقط رو همین گوشی/مرورگرت ذخیره میشه؛ سیستم ورود امن واقعی نیست.</p>
+    </div>
+
+    <div class="card" id="adminCard" style="display:none;">
+      <h3>🛡 پنل مدیریت</h3>
+      <div class="hscroll" style="padding-bottom:6px;">
+        <span class="pill adm-nav on" data-adm="dash" onclick="showAdmSection('dash')">📊 داشبورد</span>
+        <span class="pill adm-nav" data-adm="users" onclick="showAdmSection('users')">👥 کاربران</span>
+        <span class="pill adm-nav" data-adm="billing" onclick="showAdmSection('billing')">💳 اشتراک/پرداخت</span>
+        <span class="pill adm-nav" data-adm="content" onclick="showAdmSection('content')">📰 محتوا</span>
+        <span class="pill adm-nav" data-adm="forum" onclick="showAdmSection('forum')">💬 انجمن</span>
+        <span class="pill adm-nav" data-adm="tickets" onclick="showAdmSection('tickets')">🎫 تیکت‌ها</span>
+        <span class="pill adm-nav" data-adm="settings" onclick="showAdmSection('settings')">⚙️ تنظیمات سایت</span>
+        <span class="pill adm-nav" data-adm="security" onclick="showAdmSection('security')">🔒 امنیت</span>
+        <span class="pill adm-nav" data-adm="backup" onclick="showAdmSection('backup')">💾 بکاپ</span>
+      </div>
+
+      <div id="adminTools">
+
+        <!-- DASHBOARD -->
+        <div class="adm-section" id="adm-dash">
+          <div class="stat-grid" style="margin:14px 0;">
+            <div class="stat-box"><div class="num" id="admUsers">0</div><div class="lbl">کاربران</div></div>
+            <div class="stat-box"><div class="num" id="admViews">0</div><div class="lbl">بازدید</div></div>
+            <div class="stat-box"><div class="num" id="admSubs">0</div><div class="lbl">مشترکین ویژه</div></div>
+            <div class="stat-box"><div class="num" id="admRevenue">۰</div><div class="lbl">درآمد (تومان)</div></div>
+            <div class="stat-box"><div class="num" id="admPosts">0</div><div class="lbl">پست انجمن</div></div>
+            <div class="stat-box"><div class="num" id="admReels">0</div><div class="lbl">ریلز</div></div>
+            <div class="stat-box"><div class="num" id="admReqs">0</div><div class="lbl">درخواست انیمه</div></div>
+            <div class="stat-box"><div class="num" id="admTickets">0</div><div class="lbl">تیکت باز</div></div>
+          </div>
+          <h4 style="margin:14px 0 6px;font-size:14px;">📈 روند ثبت‌نام ۷ روز اخیر</h4>
+          <div id="admSignupChart" style="display:flex;align-items:flex-end;gap:6px;height:80px;background:var(--card2);border-radius:10px;padding:8px;"></div>
+          <h4 style="margin:18px 0 6px;font-size:14px;">🕒 فعالیت‌های اخیر</h4>
+          <div id="admActivityList"></div>
+        </div>
+
+        <!-- USERS -->
+        <div class="adm-section" id="adm-users" style="display:none;">
+          <input id="admUserSearch" placeholder="جستجو با ایمیل یا اسم..." style="margin:14px 0 10px;" oninput="renderAdminUsers()" />
+          <div id="admUsersList"></div>
+        </div>
+
+        <!-- BILLING -->
+        <div class="adm-section" id="adm-billing" style="display:none;">
+          <h4 style="margin:14px 0 6px;font-size:14px;">💳 تراکنش‌ها</h4>
+          <div id="admPaymentsList"></div>
+          <p class="muted-small" style="margin-top:10px;">⚡ فعلاً پرداخت آزمایشی است. برای اتصال درگاه واقعی، تابع <code>confirmMockPayment()</code> باید با فراخوانی API بک‌اند جایگزین شود.</p>
+        </div>
+
+        <!-- CONTENT (news + featured) -->
+        <div class="adm-section" id="adm-content" style="display:none;">
+          <h4 style="margin:14px 0 6px;font-size:14px;">📢 بنر اعلان (بالای خانه، برای همه)</h4>
+          <textarea id="admAnnounceInput" rows="2" placeholder="مثلا: امشب قسمت جدید ریزیرو منتشر شد!"></textarea>
+          <div class="row" style="margin-top:6px;">
+            <button class="btn" style="flex:1;" onclick="adminSetAnnouncement()">انتشار</button>
+            <button class="btn ghost" style="flex:1;" onclick="adminClearAnnouncement()">حذف بنر</button>
+          </div>
+
+          <h4 style="margin:18px 0 6px;font-size:14px;">📰 مدیریت اخبار</h4>
+          <input id="admNewsTitle" placeholder="متن خبر..." style="margin-bottom:6px;" />
+          <input id="admNewsSource" placeholder="منبع (مثلا: Crunchyroll News)" />
+          <button class="btn" style="width:100%;margin-top:6px;" onclick="adminAddNews()">افزودن خبر</button>
+          <div id="admNewsList" style="margin-top:10px;"></div>
+
+          <h4 style="margin:18px 0 6px;font-size:14px;">🎬 اعلان قسمت جدید</h4>
+          <input id="admEpAnime" placeholder="اسم انیمه..." style="margin-bottom:6px;" />
+          <input id="admEpNumber" placeholder="شماره قسمت..." style="margin-bottom:6px;" />
+          <button class="btn" style="width:100%;" onclick="adminAddEpisodeAnnounce()">افزودن اعلان قسمت</button>
+          <div id="admEpisodesList" style="margin-top:10px;"></div>
+
+          <h4 style="margin:18px 0 6px;font-size:14px;">⭐ انیمه‌ی ویژه</h4>
+          <p class="muted-small">برای ویژه‌کردن یه انیمه تو خانه، وارد صفحه‌ی جزئیاتش شو و دکمه‌ی «⭐ ویژه کن» رو بزن.</p>
+          <button class="btn ghost" style="width:100%;" onclick="adminClearFeatured()">حذف انیمه‌ی ویژه</button>
+        </div>
+
+        <!-- FORUM MODERATION -->
+        <div class="adm-section" id="adm-forum" style="display:none;">
+          <h4 style="margin:14px 0 6px;font-size:14px;">🧹 پاک‌سازی کلی</h4>
+          <button class="btn ghost" style="width:100%;margin-bottom:8px;" onclick="adminClear('forum-posts')">🗑 پاک‌کردن همه‌ی پست‌های انجمن</button>
+          <button class="btn ghost" style="width:100%;margin-bottom:8px;" onclick="adminClear('reels-list')">🗑 پاک‌کردن همه‌ی ریلزها</button>
+          <button class="btn ghost" style="width:100%;" onclick="adminClear('anime-requests')">🗑 پاک‌کردن همه‌ی درخواست‌ها</button>
+          <p class="muted-small" style="margin-top:10px;">برای حذف تک‌تک پست‌ها، برو تب انجمن؛ کنار هر پست یه 🗑 اضافه میشه. کنار هر درخواست هم می‌تونی ✅ بزنی تا «انجام‌شده» علامت بخوره.</p>
+        </div>
+
+        <!-- SUPPORT TICKETS -->
+        <div class="adm-section" id="adm-tickets" style="display:none;">
+          <div id="admTicketsList" style="margin-top:14px;"></div>
+        </div>
+
+        <!-- SITE SETTINGS -->
+        <div class="adm-section" id="adm-settings" style="display:none;">
+          <input id="admSiteName" placeholder="نام سایت" style="margin:14px 0 8px;" />
+          <input id="admLogoEmoji" placeholder="ایموجی/نماد لوگو (مثلا 🎌)" style="margin-bottom:8px;" />
+          <input id="admSeoDesc" placeholder="توضیحات SEO (متا دیسکریپشن)" style="margin-bottom:8px;" />
+          <input id="admFavicon" placeholder="ایموجی Favicon (مثلا 🎌)" style="margin-bottom:8px;" />
+          <h4 style="margin:12px 0 6px;font-size:14px;">🔗 شبکه‌های اجتماعی</h4>
+          <input id="admSocialInsta" placeholder="لینک اینستاگرام" style="margin-bottom:6px;" />
+          <input id="admSocialTelegram" placeholder="لینک تلگرام" style="margin-bottom:6px;" />
+          <input id="admSocialDiscord" placeholder="لینک دیسکورد" style="margin-bottom:6px;" />
+          <input id="admSocialTwitter" placeholder="لینک توییتر/X" style="margin-bottom:6px;" />
+          <button class="btn" style="width:100%;margin-top:8px;" onclick="adminSaveSettings()">ذخیره تنظیمات</button>
+        </div>
+
+        <!-- SECURITY -->
+        <div class="adm-section" id="adm-security" style="display:none;">
+          <h4 style="margin:14px 0 6px;font-size:14px;">🔑 تغییر کد ورود مدیر</h4>
+          <input id="admNewCode" type="password" placeholder="کد جدید مدیر..." style="margin-bottom:8px;" />
+          <button class="btn" style="width:100%;" onclick="adminChangeCode()">تغییر کد</button>
+          <h4 style="margin:18px 0 6px;font-size:14px;">📜 لاگ فعالیت مدیران</h4>
+          <div id="admLogList"></div>
+        </div>
+
+        <!-- BACKUP -->
+        <div class="adm-section" id="adm-backup" style="display:none;">
+          <p class="muted-small" style="margin:14px 0;">یک فایل JSON از تمام داده‌های عمومی سایت (اخبار، پست‌ها، ریلزها، تنظیمات، کاربران، پرداخت‌ها و ...) بگیر یا بازیابی کن.</p>
+          <button class="btn" style="width:100%;margin-bottom:8px;" onclick="adminBackupExport()">⬇️ دریافت نسخه پشتیبان</button>
+          <input id="admBackupFile" type="file" accept="application/json" style="display:none;" onchange="adminBackupImport(this.files[0])" />
+          <button class="btn ghost" style="width:100%;" onclick="document.getElementById('admBackupFile').click()">⬆️ بازیابی از فایل</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FORUM -->
+
+  <section class="tab" id="tab-forum">
+    <div class="card">
+      <h3>انجمن گفتگو</h3>
+      <p>اینجا فقط بحث و نظره (بدون آپلود ویدیو).</p>
+      <textarea id="postInput" rows="3" placeholder="نظرتو بنویس..." style="margin-top:10px;"></textarea>
+      <button class="btn" style="margin-top:8px;" onclick="addPost()">ارسال</button>
+    </div>
+    <div id="postList"></div>
+  </section>
+
+  <!-- AI ASSISTANT -->
+  <section class="tab" id="tab-ai">
+    <div class="card">
+      <h3>دستیار هوشمند</h3>
+      <p>هر سوالی داری بپرس (نه فقط انیمه)، یا عکس یه صحنه/کاراکتر رو بفرست تا اسم انیمه‌شو پیدا کنم.</p>
+    </div>
+    <div id="aiChat" style="max-height:340px;overflow-y:auto;margin-bottom:10px;"></div>
+    <div class="row">
+      <input id="aiInput" placeholder="سوالتو بپرس یا عکس بفرست..." />
+      <input id="aiImageInput" type="file" accept="image/*" style="display:none;" onchange="sendAIImage(this.files[0])" />
+      <button class="btn ghost" onclick="document.getElementById('aiImageInput').click()" title="ارسال عکس">📷</button>
+      <button class="btn" onclick="sendAI()">ارسال</button>
+    </div>
+  </section>
+
+  <!-- REELS -->
+  <section class="tab" id="tab-reels">
+    <div class="card">
+      <h3>🎬 ریلز انیمه</h3>
+      <p>کلیپ ادیت خودتو (لینک یوتیوب یا آپارات) به اشتراک بذار. اینجا فقط ادیت و کلیپ‌های طرفدارهاست، نه قسمت کامل انیمه.</p>
+      <input id="reelLink" placeholder="لینک ویدیو (یوتیوب/آپارات)" style="margin-top:10px;" />
+      <input id="reelCaption" placeholder="توضیح کوتاه..." style="margin-top:8px;" />
+      <button class="btn" style="margin-top:8px;width:100%;" onclick="addReel()">انتشار ریلز</button>
+    </div>
+    <div id="reelsList"></div>
+  </section>
+
+  <footer class="app-footer">
+    <div class="flinks">
+      <span>درباره‌ی ما</span><span>قوانین</span><span>حریم خصوصی</span><span>تماس</span>
+    </div>
+    <div class="ficons">
+      <span title="اینستاگرام">📷</span><span title="تلگرام">✈️</span><span title="دیسکورد">💬</span><span title="توییتر">🐦</span>
+    </div>
+    <div class="fcopy">Anime Night © ۱۴۰۵ — ساخته‌شده با ❤️ برای طرفدارهای انیمه</div>
+  </footer>
+
+</main>
+
+<nav class="bottom">
+  <div class="item active" data-tab="home" onclick="showTab('home')"><div class="icon">🏠</div>خانه</div>
+  <div class="item" data-tab="games" onclick="showTab('games')"><div class="icon">🎮</div>گیم‌هاب</div>
+  <div class="item" data-tab="reels" onclick="showTab('reels')"><div class="icon">🎬</div>ریلز</div>
+  <div class="item" data-tab="ai" onclick="showTab('ai')"><div class="icon">🤖</div>دستیار</div>
+  <div class="item" data-tab="forum" onclick="showTab('forum')"><div class="icon">💬</div>انجمن</div>
+  <div class="item" data-tab="profile" onclick="showTab('profile')"><div class="icon">👤</div>پنل</div>
+</nav>
+
+<script>
+/* ==========================================================================
+   ANIME NIGHT — app.js
+   --------------------------------------------------------------------------
+   ARCHITECTURE NOTES (برای توسعه‌ی بعدی):
+
+   این فایل به دو لایه تقسیم شده تا بعداً اضافه‌کردن بک‌اند (Node.js یا
+   Flask) بدون بازنویسی کامل ممکن باشه:
+
+   1) DATA LAYER  → توابعی که داده می‌گیرن/ذخیره می‌کنن:
+      - getVal / setVal            → لایه‌ی ذخیره‌سازی (الان: window.storage
+                                       — بعداً: جایگزین با فراخوانی API بک‌اند)
+      - anilistFetch / *Fetch      → لایه‌ی دیتای بیرونی (API عمومی AniList)
+      این توابع تنها جاهایی‌ان که باید عوض بشن وقتی بک‌اند اضافه شد؛ بقیه‌ی
+      کد (UI) کاری به منبع داده نداره.
+
+   2) UI LAYER    → توابع render / init / on-click که فقط HTML می‌سازن.
+
+   نکته: پروفایل/ورود/انجمن/ریلز فعلاً محلی (window.storage) کار می‌کنن.
+   وقتی بک‌اند واقعی اضافه شد، فقط کافیه توابع getVal/setVal و submitAuth/
+   checkSession با فراخوانی fetch به سرور خودتون جایگزین بشن؛ بقیه‌ی
+   کد دست‌نخورده می‌مونه.
+   ========================================================================== */
+
+/* ---------- NAV ---------- */
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('nav.bottom .item').forEach(i=>i.classList.remove('active'));
+  document.querySelector('nav.bottom .item[data-tab="'+name+'"]').classList.add('active');
+}
+
+/* ---------- STORAGE HELPERS ---------- */
+async function getVal(key, shared=false, fallback){
+  try{ const r = await window.storage.get(key, shared); return r ? JSON.parse(r.value) : fallback; }
+  catch(e){ return fallback; }
+}
+async function setVal(key, value, shared=false){
+  try{ await window.storage.set(key, JSON.stringify(value), shared); }catch(e){ console.error(e); }
+}
+
+/* ---------- SECURITY: escape any user-supplied text before it goes into innerHTML ---------- */
+function escapeHtml(str){
+  return String(str ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+/* ---------- SKELETON LOADING HELPER ---------- */
+function populateYearFilter(){
+  const sel = document.getElementById('filterYear');
+  if(!sel) return;
+  const currentYear = new Date().getFullYear();
+  for(let y=currentYear+1; y>=1990; y--){
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    sel.appendChild(opt);
+  }
+}
+function renderSkeletons(containerId, count=5, cls='neon-card'){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML='';
+  for(let i=0;i<count;i++){
+    const d=document.createElement('div');
+    d.className=cls+' skeleton-card';
+    d.innerHTML = `<div class="skeleton" style="aspect-ratio:2/3;border-radius:10px;margin-bottom:8px;"></div>
+      <div class="skeleton" style="height:11px;width:80%;border-radius:4px;margin-bottom:5px;"></div>
+      <div class="skeleton" style="height:9px;width:50%;border-radius:4px;"></div>`;
+    box.appendChild(d);
+  }
+}
+
+/* ---------- REAL AIRING/UPCOMING/SEARCH/CALENDAR (AniList public GraphQL API) ---------- */
+async function anilistFetch(query, variables){
+  try{
+    const res = await fetch('https://graphql.anilist.co', {
+      method:'POST',
+      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify({query, variables})
+    });
+    return await res.json();
+  }catch(e){ return null; }
+}
+function mediaTitle(m){ return (m.title && (m.title.english || m.title.romaji)) || '—'; }
+function mediaCard(m){
+  const d=document.createElement('div');
+  d.className='neon-card';
+  d.innerHTML = `
+    <img class="thumb" style="object-fit:cover;" loading="lazy" src="${(m.coverImage && (m.coverImage.large)) || ''}" onerror="this.style.display='none'"/>
+    <div class="cap">${mediaTitle(m)}</div>
+    <div class="sub">⭐ ${m.averageScore ? (m.averageScore/10).toFixed(1) : '?'} · ${m.episodes || '?'} قسمت</div>`;
+  d.onclick = ()=> openAnimeDetail(m.id);
+  return d;
+}
+async function loadAnilistRow(status, containerId){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  renderSkeletons(containerId, 5);
+  const query = `query($status: MediaStatus){
+    Page(perPage:8){
+      media(type:ANIME, status:$status, sort:POPULARITY_DESC){
+        id title{ romaji english } coverImage{ large } averageScore episodes
+      }
+    }
+  }`;
+  const data = await anilistFetch(query, {status});
+  const list = (data && data.data && data.data.Page && data.data.Page.media) || [];
+  box.innerHTML = list.length ? '' : '<p class="muted-small">اتصال به AniList برقرار نشد، دوباره امتحان کن.</p>';
+  list.forEach(m=> box.appendChild(mediaCard(m)));
+}
+
+/* ---------- ADVANCED SEARCH / DISCOVER (unified: text + genre + year + score + status + sort) ---------- */
+let lastSearchResults = [];
+let currentMediaType = 'ANIME';
+function setMediaType(type){
+  currentMediaType = type;
+  document.getElementById('typeAnimeBtn').classList.toggle('on', type==='ANIME');
+  document.getElementById('typeMangaBtn').classList.toggle('on', type==='MANGA');
+  searchRealAnime();
+}
+async function searchRealAnime(){
+  const q = document.getElementById('realSearchInput').value.trim();
+  const genre = document.getElementById('filterGenre')?.value || '';
+  const country = document.getElementById('filterCountry')?.value || '';
+  const year = document.getElementById('filterYear')?.value || '';
+  const minScore = document.getElementById('filterScore')?.value || '';
+  const status = document.getElementById('filterStatus')?.value || '';
+  const sort = document.getElementById('filterSort')?.value || 'POPULARITY_DESC';
+  const box = document.getElementById('realSearchResults');
+  renderSkeletons('realSearchResults', 5, 'real-result');
+  const query = `query($search:String,$type:MediaType,$genre:[String],$country:CountryCode,$year:Int,$score:Int,$status:MediaStatus,$sort:[MediaSort]){
+    Page(perPage:10){
+      media(type:$type, search:$search, genre_in:$genre, countryOfOrigin:$country, seasonYear:$year, averageScore_greater:$score, status:$status, sort:$sort){
+        id type title{ romaji english } coverImage{ medium } averageScore episodes chapters genres seasonYear status
+      }
+    }
+  }`;
+  const variables = {
+    search: q || null,
+    type: currentMediaType,
+    genre: genre ? [genre] : null,
+    country: country || null,
+    year: year ? parseInt(year) : null,
+    score: minScore ? parseInt(minScore) : null,
+    status: status || null,
+    sort: [sort]
+  };
+  const data = await anilistFetch(query, variables);
+  lastSearchResults = (data && data.data && data.data.Page && data.data.Page.media) || [];
+  box.innerHTML = lastSearchResults.length ? '' : '<p class="muted-small">چیزی پیدا نشد، فیلترها رو کم‌تر کن.</p>';
+  lastSearchResults.forEach((anime, idx)=>{
+    const d = document.createElement('div');
+    d.className='real-result';
+    const countLabel = anime.type==='MANGA' ? `${anime.chapters||'?'} فصل` : `${anime.episodes||'?'} قسمت`;
+    d.innerHTML = `
+      <div class="row" style="cursor:pointer;" onclick="openAnimeDetail(${anime.id}, '${anime.type||'ANIME'}')">
+        <img loading="lazy" src="${(anime.coverImage && anime.coverImage.medium) || ''}" onerror="this.style.display='none'"/>
+        <div>
+          <div style="font-size:13px;">${mediaTitle(anime)}</div>
+          <div class="muted-small">⭐ ${anime.averageScore?(anime.averageScore/10).toFixed(1):'?'} · ${countLabel} · ${anime.seasonYear||'?'}</div>
+        </div>
+      </div>
+      <span class="pill" onclick="quickAddFromSearch(${idx})">افزودن</span>`;
+    box.appendChild(d);
+  });
+}
+document.getElementById('realSearchInput')?.addEventListener('keydown', e=>{ if(e.key==='Enter') searchRealAnime(); });
+async function quickAddFromSearch(idx){
+  const anime = lastSearchResults[idx];
+  if(!anime) return;
+  const genre = (anime.genres && anime.genres[0]) || 'اکشن';
+  animeList.push({name:mediaTitle(anime), genre});
+  await setVal('anime-list', animeList, false);
+  renderAnime();
+}
+
+/* ---------- BROWSE ALL (full grid, paginated) ---------- */
+let browseState = { status:null, page:1 };
+function openBrowseAll(status, label){
+  browseState = { status, page:1 };
+  document.getElementById('browseTitle').textContent = label;
+  document.getElementById('browseGrid').innerHTML = '';
+  document.getElementById('browseOverlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  loadBrowsePage(true);
+}
+async function loadBrowsePage(reset){
+  const grid = document.getElementById('browseGrid');
+  const btn = document.getElementById('browseMoreBtn');
+  btn.textContent = 'در حال بارگذاری...';
+  btn.disabled = true;
+  try{
+    const query = `query($status:MediaStatus,$page:Int){
+      Page(perPage:24, page:$page){
+        pageInfo{ hasNextPage }
+        media(type:ANIME, status:$status, sort:POPULARITY_DESC){
+          id title{ romaji english } coverImage{ large } averageScore episodes
+        }
+      }
+    }`;
+    const data = await anilistFetch(query, {status:browseState.status, page:browseState.page});
+    const pageData = data && data.data && data.data.Page;
+    const list = (pageData && pageData.media) || [];
+    list.forEach(m=> grid.appendChild(mediaCard(m)));
+    const hasMore = pageData && pageData.pageInfo && pageData.pageInfo.hasNextPage;
+    btn.style.display = hasMore ? 'block' : 'none';
+    browseState.page++;
+  }catch(err){
+    if(reset) grid.innerHTML = '<p class="muted-small">مشکلی تو دریافت اطلاعات پیش اومد.</p>';
+  }
+  btn.textContent = 'بارگذاری بیشتر';
+  btn.disabled = false;
+}
+function closeBrowse(){
+  document.getElementById('browseOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* ---------- ANIME DETAIL PAGE ---------- */
+async function openAnimeDetail(id, type){
+  type = type || 'ANIME';
+  const overlay = document.getElementById('detailOverlay');
+  if(!overlay){ alert('خطای داخلی: صفحه‌ی جزئیات پیدا نشد. لطفاً فایل رو دوباره (تازه) دانلود کن.'); return; }
+  overlay.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('detailBody').innerHTML = `
+    <div class="skeleton" style="width:100%;aspect-ratio:16/9;border-radius:16px;margin-bottom:16px;"></div>
+    <div class="skeleton" style="height:20px;width:60%;border-radius:6px;margin-bottom:10px;"></div>
+    <div class="skeleton" style="height:12px;width:90%;border-radius:6px;"></div>`;
+  try{
+    const query = `query($id:Int,$type:MediaType){
+      Media(id:$id, type:$type){
+        id type title{ romaji english } description(asHtml:false)
+        coverImage{ extraLarge } bannerImage
+        genres averageScore episodes chapters status seasonYear
+        studios(isMain:true){ nodes{ name } }
+        trailer{ id site }
+        characters(sort:ROLE, perPage:8){ edges{ role node{ name{ full } image{ large } } } }
+        recommendations(perPage:8, sort:RATING_DESC){ nodes{ mediaRecommendation{ id type title{ romaji english } coverImage{ large } } } }
+      }
+    }`;
+    const data = await anilistFetch(query, {id, type});
+    const m = data && data.data && data.data.Media;
+    if(!m){ document.getElementById('detailBody').innerHTML = '<p class="muted-small">اطلاعات پیدا نشد. اتصال اینترنت (یا VPN) رو چک کن و دوباره امتحان کن.</p>'; return; }
+    renderDetailBody(m);
+  }catch(err){
+    document.getElementById('detailBody').innerHTML = '<p class="muted-small">مشکلی پیش اومد: '+(err && err.message ? err.message : 'نامشخص')+'</p>';
+  }
+}
+function renderDetailBody(m){
+  pushHistory(m);
+
+  const studio = (m.studios && m.studios.nodes && m.studios.nodes[0] && m.studios.nodes[0].name) || '—';
+  const desc = (m.description || '').replace(/<br\s*\/?>/g,' ').replace(/<[^>]+>/g,'');
+  const genresHtml = (m.genres||[]).map(g=>`<span class="pill" style="cursor:default;">${g}</span>`).join(' ');
+  const trailerHtml = (m.trailer && m.trailer.site==='youtube')
+    ? `<div class="reel-embed" style="aspect-ratio:16/9;max-height:260px;margin:14px 0;"><iframe style="width:100%;height:100%;" src="https://www.youtube.com/embed/${m.trailer.id}" allowfullscreen frameborder="0"></iframe></div>`
+    : '';
+  const charsHtml = (m.characters && m.characters.edges || []).map(e=>`
+    <div class="neon-card" style="flex:0 0 90px;cursor:default;">
+      <img class="thumb" loading="lazy" style="object-fit:cover;" src="${(e.node.image && e.node.image.large) || ''}" onerror="this.style.display='none'"/>
+      <div class="cap" style="font-size:11px;">${(e.node.name && e.node.name.full) || ''}</div>
+    </div>`).join('');
+  const simHtml = (m.recommendations && m.recommendations.nodes || [])
+    .filter(n=>n.mediaRecommendation)
+    .map(n=>{
+      const rm = n.mediaRecommendation;
+      return `<div class="neon-card" onclick="openAnimeDetail(${rm.id}, '${rm.type||'ANIME'}')">
+        <img class="thumb" loading="lazy" style="object-fit:cover;" src="${(rm.coverImage && rm.coverImage.large) || ''}" onerror="this.style.display='none'"/>
+        <div class="cap">${mediaTitle(rm)}</div>
+      </div>`;
+    }).join('');
+
+  document.getElementById('detailBody').innerHTML = `
+    ${m.bannerImage ? `<img src="${m.bannerImage}" loading="lazy" style="width:100%;border-radius:16px;aspect-ratio:16/6;object-fit:cover;margin-bottom:14px;" onerror="this.style.display='none'"/>` : ''}
+    <div class="row" style="align-items:flex-start;gap:16px;">
+      <img loading="lazy" src="${(m.coverImage && m.coverImage.extraLarge) || ''}" style="width:110px;border-radius:12px;flex-shrink:0;" onerror="this.style.display='none'"/>
+      <div>
+        <h2 style="margin:0 0 6px;font-size:19px;">${mediaTitle(m)}</h2>
+        <div class="muted-small">⭐ ${m.averageScore?(m.averageScore/10).toFixed(1):'?'} · ${m.type==='MANGA' ? (m.chapters||'?')+' فصل' : (m.episodes||'?')+' قسمت'} · ${m.seasonYear||'?'} · ${studio}</div>
+        <div class="muted-small" style="margin-top:4px;">وضعیت: ${translateStatus(m.status)}</div>
+      </div>
+    </div>
+    <div style="margin:14px 0;">${genresHtml}</div>
+    <p style="font-size:13px;line-height:2;color:var(--text);">${desc}</p>
+    ${trailerHtml}
+    <button class="btn" style="width:100%;margin:10px 0 6px;" onclick='quickAddDetail(${JSON.stringify(mediaTitle(m))}, ${JSON.stringify((m.genres&&m.genres[0])||"اکشن")})'>➕ افزودن به لیست تماشا</button>
+    ${isAdmin ? `<button class="btn ghost" style="width:100%;margin-bottom:10px;" onclick='adminSetFeatured(${m.id}, ${JSON.stringify(mediaTitle(m))}, ${JSON.stringify((m.coverImage&&m.coverImage.extraLarge)||"")})'>⭐ ویژه کن (نمایش تو خانه)</button>` : ''}
+    ${charsHtml ? `<div class="row-title"><h3>🎭 شخصیت‌ها</h3></div><div class="hscroll">${charsHtml}</div>` : ''}
+    ${simHtml ? `<div class="row-title"><h3>🔗 مشابه</h3></div><div class="hscroll">${simHtml}</div>` : ''}
+  `;
+}
+function translateStatus(s){
+  const map = {RELEASING:'در حال پخش', FINISHED:'تمام‌شده', NOT_YET_RELEASED:'هنوز پخش نشده', CANCELLED:'لغوشده', HIATUS:'متوقف‌شده'};
+  return map[s] || s || '—';
+}
+async function quickAddDetail(name, genre){
+  animeList.push({name, genre});
+  await setVal('anime-list', animeList, false);
+  renderAnime();
+  alert('✅ به لیست تماشا اضافه شد');
+}
+function closeDetail(){
+  document.getElementById('detailOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* ---------- CONTINUE WATCHING / RECENTLY VIEWED ---------- */
+let historyList = [];
+async function loadHistory(){
+  historyList = await getVal('history-list', false, []);
+  renderHistoryRow();
+}
+async function pushHistory(m){
+  historyList = historyList.filter(h=>h.id!==m.id);
+  historyList.unshift({id:m.id, title:mediaTitle(m), cover:m.coverImage?.large||''});
+  historyList = historyList.slice(0,10);
+  await setVal('history-list', historyList, false);
+  renderHistoryRow();
+}
+function renderHistoryRow(){
+  const box = document.getElementById('historyHscroll');
+  if(!box) return;
+  box.innerHTML = historyList.length ? '' : '<p class="muted-small">هنوز چیزی ندیدی.</p>';
+  historyList.forEach(h=>{
+    const d=document.createElement('div');
+    d.className='neon-card';
+    d.innerHTML = `<img class="thumb" loading="lazy" style="object-fit:cover;" src="${h.cover}" onerror="this.style.display='none'"/><div class="cap">${h.title}</div>`;
+    d.onclick = ()=> openAnimeDetail(h.id);
+    box.appendChild(d);
+  });
+}
+
+/* ---------- RELEASE CALENDAR ---------- */
+async function loadCalendar(){
+  const box = document.getElementById('calendarList');
+  if(!box) return;
+  renderSkeletons('calendarList', 4, 'calendar-item');
+  const now = Math.floor(Date.now()/1000);
+  const query = `query($now:Int){
+    Page(perPage:10){
+      airingSchedules(airingAt_greater:$now, sort:TIME){
+        airingAt episode
+        media{ id title{ romaji english } coverImage{ medium } }
+      }
+    }
+  }`;
+  const data = await anilistFetch(query, {now});
+  const list = (data && data.data && data.data.Page && data.data.Page.airingSchedules) || [];
+  box.innerHTML = list.length ? '' : '<p class="muted-small">اطلاعاتی پیدا نشد.</p>';
+  list.forEach(s=>{
+    const d = document.createElement('div');
+    d.className = 'calendar-item';
+    d.onclick = ()=> openAnimeDetail(s.media.id);
+    d.innerHTML = `
+      <img loading="lazy" src="${(s.media.coverImage && s.media.coverImage.medium) || ''}" onerror="this.style.display='none'"/>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;">${mediaTitle(s.media)}</div>
+        <div class="muted-small">قسمت ${s.episode}</div>
+      </div>
+      <div class="countdown" data-airing="${s.airingAt}" style="white-space:nowrap;font-size:12px;font-weight:800;color:var(--neon);"></div>`;
+    box.appendChild(d);
+  });
+  computeNotifications(list);
+  updateCountdowns();
+}
+function formatCountdown(seconds){
+  if(seconds<=0) return 'پخش شد 🎬';
+  const days = Math.floor(seconds/86400);
+  const hours = Math.floor((seconds%86400)/3600);
+  const mins = Math.floor((seconds%3600)/60);
+  const secs = Math.floor(seconds%60);
+  if(days>0) return `⏳ ${days} روز ${hours} ساعت`;
+  if(hours>0) return `⏳ ${hours}:${String(mins).padStart(2,'0')} ساعت`;
+  return `⏳ ${mins}:${String(secs).padStart(2,'0')} دقیقه`;
+}
+function updateCountdowns(){
+  const now = Math.floor(Date.now()/1000);
+  document.querySelectorAll('.countdown').forEach(el=>{
+    const airing = parseInt(el.dataset.airing, 10);
+    el.textContent = formatCountdown(airing - now);
+  });
+}
+setInterval(updateCountdowns, 1000);
+
+/* ---------- NOTIFICATIONS (in-app; based on your watchlist + calendar) ---------- */
+let notifications = [];
+function computeNotifications(calendarList){
+  notifications = [];
+  const myTitles = animeList.map(a=>a.name.toLowerCase());
+  (calendarList||[]).forEach(s=>{
+    const t = mediaTitle(s.media).toLowerCase();
+    if(myTitles.some(mt=> t.includes(mt) || mt.includes(t))){
+      const dt = new Date(s.airingAt*1000);
+      notifications.push(`🔔 قسمت ${s.episode} «${mediaTitle(s.media)}» ${dt.toLocaleDateString('fa-IR',{month:'short',day:'numeric'})} پخش میشه`);
+    }
+  });
+  renderNotifDropdown();
+}
+function renderNotifDropdown(){
+  const badge = document.getElementById('notifBadge');
+  const list = document.getElementById('notifList');
+  if(!badge || !list) return;
+  badge.style.display = notifications.length ? 'flex' : 'none';
+  badge.textContent = notifications.length;
+  list.innerHTML = notifications.length
+    ? notifications.map(n=>`<div class="notif-item">${n}</div>`).join('')
+    : '<div class="notif-item muted-small">اعلانی نداری. انیمه‌هاتو به لیست اضافه کن تا قسمت‌های جدیدشون رو بهت بگم.</div>';
+}
+function toggleNotifPanel(){
+  document.getElementById('notifPanel').classList.toggle('open');
+}
+
+/* ---------- ANIME LIST ---------- */
+let animeList = [];
+let genreFilter = 'همه';
+async function loadAnime(){
+  animeList = await getVal('anime-list', false, []);
+  animeList = animeList.map(a => typeof a === 'string' ? {name:a, genre:'اکشن'} : a);
+  renderAnime();
+}
+function setGenreFilter(g){
+  genreFilter = g;
+  document.querySelectorAll('#genreFilters .pill').forEach(p=>p.classList.toggle('on', p.dataset.genre===g));
+  renderAnime();
+}
+function renderAnime(){
+  const box = document.getElementById('animeList');
+  const q = (document.getElementById('animeSearch')?.value || '').trim();
+  const filtered = animeList.filter(a=>{
+    const matchesGenre = genreFilter==='همه' || a.genre===genreFilter;
+    const matchesSearch = !q || a.name.includes(q);
+    return matchesGenre && matchesSearch;
+  });
+  box.innerHTML = filtered.length ? '' : '<p class="muted-small">چیزی پیدا نشد.</p>';
+  filtered.forEach((a)=>{
+    const i = animeList.indexOf(a);
+    const div = document.createElement('div');
+    div.className='list-item';
+    div.style.flexDirection='column';
+    div.style.alignItems='stretch';
+    const stars = [1,2,3,4,5].map(n=>`<span onclick="rateAnime(${i},${n})" style="cursor:pointer;">${n<=(a.rating||0)?'⭐':'☆'}</span>`).join('');
+    div.innerHTML = `
+      <div class="row" style="justify-content:space-between;">
+        <span>📺 ${escapeHtml(a.name)} <span class="muted-small">(${escapeHtml(a.genre)})</span></span>
+        <span class="pill" onclick="removeAnime(${i})">حذف</span>
+      </div>
+      <div class="row" style="justify-content:space-between;margin-top:6px;">
+        <div>${stars}</div>
+        <span class="muted-small" style="cursor:pointer;" onclick="toggleComments(${i})">💬 ${(a.comments||[]).length} نظر</span>
+      </div>
+      <div id="comments-${i}" style="display:none;margin-top:8px;"></div>`;
+    box.appendChild(div);
+  });
+  document.getElementById('statAnime').textContent = animeList.length;
+  renderAnimeHscroll();
+}
+function renderAnimeHscroll(){
+  const box = document.getElementById('animeHscroll');
+  if(!box) return;
+  box.innerHTML = animeList.length ? '' : '<p class="muted-small">هنوز چیزی به لیستت اضافه نکردی.</p>';
+  animeList.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='neon-card';
+    d.innerHTML = `<div class="thumb">📺</div><div class="cap">${escapeHtml(a.name)}</div><div class="sub">${escapeHtml(a.genre)}${a.rating?' · ⭐'+a.rating:''}</div>`;
+    d.onclick=()=>showTab('home');
+    box.appendChild(d);
+  });
+}
+async function addAnime(){
+  const input = document.getElementById('animeInput');
+  const genre = document.getElementById('genreInput').value;
+  const val = input.value.trim();
+  if(!val) return;
+  animeList.push({name:val, genre});
+  await setVal('anime-list', animeList, false);
+  input.value='';
+  renderAnime();
+}
+async function removeAnime(i){
+  animeList.splice(i,1);
+  await setVal('anime-list', animeList, false);
+  renderAnime();
+}
+async function rateAnime(i, n){
+  animeList[i].rating = n;
+  await setVal('anime-list', animeList, false);
+  renderAnime();
+}
+function toggleComments(i){
+  const box = document.getElementById('comments-'+i);
+  const isOpen = box.style.display==='block';
+  box.style.display = isOpen ? 'none' : 'block';
+  if(!isOpen) renderComments(i);
+}
+function renderComments(i){
+  const a = animeList[i];
+  const box = document.getElementById('comments-'+i);
+  const comments = a.comments || [];
+  box.innerHTML = comments.map(c=>`<div class="muted-small" style="margin-bottom:4px;">👤 ${escapeHtml(c)}</div>`).join('') +
+    `<div class="row" style="margin-top:6px;">
+      <input id="cmt-${i}" placeholder="نظرتو بنویس..." />
+      <button class="btn" onclick="addComment(${i})">ثبت</button>
+    </div>`;
+}
+async function addComment(i){
+  const input = document.getElementById('cmt-'+i);
+  const val = input.value.trim();
+  if(!val) return;
+  if(!animeList[i].comments) animeList[i].comments = [];
+  animeList[i].comments.push(val);
+  await setVal('anime-list', animeList, false);
+  renderComments(i);
+  document.getElementById('animeList').querySelector('.muted-small'); // no-op refresh count on next full render
+}
+
+/* ---------- ANIME REQUESTS ---------- */
+let requests = [];
+async function loadRequests(){
+  requests = await getVal('anime-requests', true, []);
+  renderRequests();
+}
+function renderRequests(){
+  const box = document.getElementById('reqList');
+  const sorted = [...requests].sort((a,b)=>(b.votes||0)-(a.votes||0));
+  box.innerHTML = sorted.length ? '' : '<p class="muted-small">هنوز درخواستی نیست.</p>';
+  sorted.forEach((r)=>{
+    const i = requests.indexOf(r);
+    const d=document.createElement('div');
+    d.className='list-item';
+    d.style.opacity = r.done ? '.5' : '1';
+    d.innerHTML = `<span>${r.done?'✅ ':''}${escapeHtml(r.name)}</span>
+      <div class="row" style="gap:6px;">
+        <span class="pill" onclick="voteRequest(${i})">👍 ${r.votes||0}</span>
+        ${isAdmin ? `<span class="pill" onclick="adminToggleRequestDone(${i})">${r.done?'↩️':'✅'}</span><span class="pill" onclick="adminDeleteRequest(${i})">🗑</span>` : ''}
+      </div>`;
+    box.appendChild(d);
+  });
+}
+async function adminToggleRequestDone(i){
+  if(!isAdmin) return;
+  requests[i].done = !requests[i].done;
+  await setVal('anime-requests', requests, true);
+  renderRequests();
+}
+async function adminDeleteRequest(i){
+  if(!isAdmin) return;
+  requests.splice(i,1);
+  await setVal('anime-requests', requests, true);
+  renderRequests();
+  refreshAdminCounts();
+}
+async function addRequest(){
+  const input = document.getElementById('reqInput');
+  const val = input.value.trim();
+  if(!val) return;
+  requests.push({name:val, votes:0});
+  await setVal('anime-requests', requests, true);
+  input.value='';
+  renderRequests();
+}
+async function voteRequest(i){
+  requests[i].votes = (requests[i].votes||0)+1;
+  await setVal('anime-requests', requests, true);
+  renderRequests();
+}
+
+/* ---------- NEWS (shared storage, admin-editable) ---------- */
+let newsItems = [];
+const DEFAULT_NEWS = [
+  {t:'فصل جدید Mushoku Tensei از ۵ جولای شروع شد', s:'AnimeNewsNetwork'},
+  {t:'اکران انیمیشن سینمایی Demon Slayer با استقبال جهانی روبرو شد', s:'Crunchyroll News'},
+  {t:'استودیو‌ها فصل تابستان ۲۰۲۶ رو با چند اقتباس مانگای پرطرفدار پر کردن', s:'MyAnimeList News'},
+];
+async function loadNews(){
+  newsItems = await getVal('news-items', true, null);
+  if(!newsItems){ newsItems = DEFAULT_NEWS; await setVal('news-items', newsItems, true); }
+  renderNews();
+}
+function renderNews(){
+  const box = document.getElementById('newsList');
+  box.innerHTML='';
+  newsItems.forEach((n,i)=>{
+    const d=document.createElement('div');
+    d.className='list-item';
+    d.style.flexDirection='column';
+    d.style.alignItems='flex-start';
+    d.innerHTML = `<div>${escapeHtml(n.t)}</div>
+      <div class="row" style="justify-content:space-between;width:100%;margin-top:4px;">
+        <span class="muted-small">منبع: ${escapeHtml(n.s)}</span>
+        ${isAdmin ? `<span class="pill" onclick="adminDeleteNews(${i})">🗑</span>` : ''}
+      </div>`;
+    box.appendChild(d);
+  });
+  renderAdminNewsList();
+}
+function renderAdminNewsList(){
+  const box = document.getElementById('admNewsList');
+  if(!box) return;
+  box.innerHTML = newsItems.map((n,i)=>`<div class="list-item"><span style="font-size:12px;">${escapeHtml(n.t)}</span><span class="pill" onclick="adminDeleteNews(${i})">🗑</span></div>`).join('');
+}
+async function adminAddNews(){
+  const t = document.getElementById('admNewsTitle').value.trim();
+  const s = document.getElementById('admNewsSource').value.trim() || 'Anime Night';
+  if(!t) return;
+  newsItems.unshift({t, s});
+  await setVal('news-items', newsItems, true);
+  document.getElementById('admNewsTitle').value = '';
+  document.getElementById('admNewsSource').value = '';
+  renderNews();
+}
+async function adminDeleteNews(i){
+  if(!isAdmin) return;
+  newsItems.splice(i,1);
+  await setVal('news-items', newsItems, true);
+  renderNews();
+}
+
+/* ---------- ANNOUNCEMENT BANNER (shared) ---------- */
+async function loadAnnouncement(){
+  const text = await getVal('site-announcement', true, '');
+  const box = document.getElementById('announceBanner');
+  if(text){ box.style.display='flex'; box.className='announce-banner'; box.innerHTML = '📢 '+escapeHtml(text); }
+  else{ box.style.display='none'; }
+}
+async function adminSetAnnouncement(){
+  const val = document.getElementById('admAnnounceInput').value.trim();
+  if(!val) return;
+  await setVal('site-announcement', val, true);
+  loadAnnouncement();
+  alert('✅ بنر منتشر شد.');
+}
+async function adminClearAnnouncement(){
+  await setVal('site-announcement', '', true);
+  document.getElementById('admAnnounceInput').value='';
+  loadAnnouncement();
+}
+
+/* ---------- FEATURED ANIME (shared) ---------- */
+async function loadFeatured(){
+  const f = await getVal('featured-anime', true, null);
+  const box = document.getElementById('featuredBox');
+  if(!f){ box.style.display='none'; return; }
+  box.style.display='block';
+  box.innerHTML = `<div class="featured-card" onclick="openAnimeDetail(${f.id})">
+    <img src="${f.cover||''}" onerror="this.style.display='none'"/>
+    <div><div class="tag">⭐ پیشنهاد ویژه‌ی ادمین</div><div style="font-weight:800;">${f.title}</div></div>
+  </div>`;
+}
+async function adminSetFeatured(id, title, cover){
+  if(!isAdmin) return;
+  await setVal('featured-anime', {id, title, cover}, true);
+  loadFeatured();
+  alert('⭐ به‌عنوان انیمه‌ی ویژه ثبت شد.');
+}
+async function adminClearFeatured(){
+  await setVal('featured-anime', null, true);
+  loadFeatured();
+}
+
+/* ---------- FORUM ---------- */
+let posts = [];
+async function loadPosts(){
+  posts = await getVal('forum-posts', true, []);
+  renderPosts();
+}
+function renderPosts(){
+  const box = document.getElementById('postList');
+  box.innerHTML = posts.length ? '' : '<p class="muted-small">هنوز پستی نیست، اولین نفر باش.</p>';
+  [...posts].reverse().forEach(p=>{
+    const i = posts.indexOf(p);
+    const d=document.createElement('div');
+    d.className='card';
+    const replies = p.replies || [];
+    d.innerHTML = `
+      <div class="post-head">
+        <div class="row"><div class="post-avatar">${escapeHtml((p.user||'م')[0])}</div><span class="muted-small">${escapeHtml(p.user)}</span></div>
+        <div class="row" style="gap:8px;">
+          <span class="post-like ${p.liked?'liked':''}" onclick="togglePostLike(${i})">❤️ ${p.likes||0}</span>
+          ${isAdmin ? `<span class="pill" onclick="adminDeletePost(${i})">🗑</span>` : ''}
+        </div>
+      </div>
+      <p style="color:var(--text);margin:0 0 8px;">${escapeHtml(p.text)}</p>
+      <span class="muted-small" style="cursor:pointer;" onclick="toggleReplies(${i})">💬 ${replies.length} پاسخ</span>
+      <div id="replies-${i}" style="display:none;margin-top:10px;"></div>`;
+    box.appendChild(d);
+  });
+}
+function toggleReplies(i){
+  const box = document.getElementById('replies-'+i);
+  const isOpen = box.style.display==='block';
+  box.style.display = isOpen ? 'none' : 'block';
+  if(!isOpen) renderReplies(i);
+}
+function renderReplies(i){
+  const p = posts[i];
+  const box = document.getElementById('replies-'+i);
+  const replies = p.replies || [];
+  box.innerHTML = replies.map(r=>`<div class="muted-small" style="margin-bottom:6px;padding-right:10px;border-right:2px solid var(--line);">👤 ${escapeHtml(r)}</div>`).join('') +
+    `<div class="row" style="margin-top:6px;">
+      <input id="reply-${i}" placeholder="پاسخ بده..." />
+      <button class="btn" onclick="addReply(${i})">ارسال</button>
+    </div>`;
+}
+async function addReply(i){
+  const input = document.getElementById('reply-'+i);
+  const val = input.value.trim();
+  if(!val) return;
+  if(!posts[i].replies) posts[i].replies=[];
+  posts[i].replies.push(val);
+  await setVal('forum-posts', posts, true);
+  renderReplies(i);
+}
+async function addPost(){
+  const ta = document.getElementById('postInput');
+  const val = ta.value.trim();
+  if(!val) return;
+  const profile = await getVal('profile', false, {name:''});
+  posts.push({text:val, user: profile.name || 'من', likes:0, liked:false});
+  await setVal('forum-posts', posts, true);
+  ta.value='';
+  renderPosts();
+  let myCount = await getVal('my-post-count', false, 0);
+  myCount++;
+  await setVal('my-post-count', myCount, false);
+  document.getElementById('statPosts').textContent = myCount;
+}
+async function togglePostLike(i){
+  posts[i].liked = !posts[i].liked;
+  posts[i].likes = (posts[i].likes||0) + (posts[i].liked ? 1 : -1);
+  await setVal('forum-posts', posts, true);
+  renderPosts();
+}
+
+/* ---------- GAME HUB NAV ---------- */
+function renderGameHscroll(){
+  const box = document.getElementById('gameHscroll');
+  if(!box) return;
+  const games = [
+    {id:'g2048view', e:'🔢', t:'۲۰۴۸'},
+    {id:'memview', e:'🃏', t:'حافظه'},
+    {id:'tttview', e:'⭕', t:'دوز'},
+    {id:'snakeview', e:'🐍', t:'مار'},
+    {id:'simonview', e:'🎯', t:'توالی'},
+    {id:'quizview', e:'🧠', t:'آزمون انیمه'},
+    {id:'reflexview', e:'⚡', t:'واکنش سریع'},
+  ];
+  box.innerHTML='';
+  games.forEach(g=>{
+    const d=document.createElement('div');
+    d.className='neon-card';
+    d.innerHTML = `<div class="thumb">${g.e}</div><div class="cap">${g.t}</div>`;
+    d.onclick=()=>{ showTab('games'); openGame(g.id); };
+    box.appendChild(d);
+  });
+}
+function openGame(id){
+  document.getElementById('gameHubList').style.display='none';
+  document.getElementById(id).style.display='block';
+  if(id==='g2048view') initGame2048();
+  if(id==='memview') initMemory();
+  if(id==='tttview') initTTT();
+  if(id==='snakeview') initSnake();
+  if(id==='simonview') initSimon();
+  if(id==='quizview') initQuiz();
+  if(id==='reflexview') initReflex();
+}
+function backToHub(){
+  ['g2048view','memview','tttview','snakeview','simonview','quizview','reflexview'].forEach(id=>document.getElementById(id).style.display='none');
+  if(typeof snakeTimer!=='undefined' && snakeTimer){ clearInterval(snakeTimer); snakeTimer=null; }
+  if(reflexTimer){ clearInterval(reflexTimer); reflexTimer=null; }
+  if(reflexCountdown){ clearInterval(reflexCountdown); reflexCountdown=null; }
+  document.getElementById('gameHubList').style.display='block';
+}
+
+/* ---------- 2048 ---------- */
+let grid2048, score2048=0;
+function initGame2048(){
+  grid2048 = Array.from({length:4},()=>Array(4).fill(0));
+  score2048=0;
+  addRandom2048(); addRandom2048();
+  render2048();
+}
+function addRandom2048(){
+  const empty=[];
+  for(let r=0;r<4;r++)for(let c=0;c<4;c++) if(grid2048[r][c]===0) empty.push([r,c]);
+  if(!empty.length) return;
+  const [r,c] = empty[Math.floor(Math.random()*empty.length)];
+  grid2048[r][c] = Math.random()<0.9?2:4;
+}
+function render2048(){
+  const box=document.getElementById('g2048');
+  box.innerHTML='';
+  const colors={2:'#3a2f5c',4:'#4a3a72',8:'#ff7a3d',16:'#ff9a5d',32:'#ffb14d',64:'#ffd27a',128:'#7c5cff',256:'#9b7dff'};
+  for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+    const v=grid2048[r][c];
+    const cell=document.createElement('div');
+    cell.className='cell2048';
+    cell.style.background = v? (colors[v]||'#ffe9c7') : '#241d3a';
+    cell.style.color = v>4 ? '#1a0e05' : '#f1eefc';
+    cell.textContent = v||'';
+    box.appendChild(cell);
+  }
+  document.getElementById('scoreLabel').textContent='امتیاز: '+score2048;
+}
+function move2048(dir){
+  let moved=false;
+  function slide(row){
+    let arr=row.filter(v=>v);
+    for(let i=0;i<arr.length-1;i++){
+      if(arr[i]===arr[i+1]){arr[i]*=2;score2048+=arr[i];arr.splice(i+1,1);}
+    }
+    while(arr.length<4) arr.push(0);
+    return arr;
+  }
+  for(let i=0;i<4;i++){
+    let line;
+    if(dir==='left') line=grid2048[i];
+    if(dir==='right') line=[...grid2048[i]].reverse();
+    if(dir==='up') line=[grid2048[0][i],grid2048[1][i],grid2048[2][i],grid2048[3][i]];
+    if(dir==='down') line=[grid2048[3][i],grid2048[2][i],grid2048[1][i],grid2048[0][i]];
+    const before=line.join(',');
+    const after=slide(line);
+    if(before!==after.join(',')) moved=true;
+    if(dir==='left') grid2048[i]=after;
+    if(dir==='right') grid2048[i]=[...after].reverse();
+    if(dir==='up') for(let r=0;r<4;r++) grid2048[r][i]=after[r];
+    if(dir==='down') for(let r=0;r<4;r++) grid2048[3-r][i]=after[r];
+  }
+  if(moved){ addRandom2048(); render2048(); }
+}
+document.addEventListener('keydown',(e)=>{
+  if(document.getElementById('g2048view').style.display!=='block') return;
+  if(e.key==='ArrowUp') move2048('up');
+  if(e.key==='ArrowDown') move2048('down');
+  if(e.key==='ArrowLeft') move2048('left');
+  if(e.key==='ArrowRight') move2048('right');
+});
+
+/* ---------- MEMORY ---------- */
+let memCards=[], memFlipped=[], memMatched=0;
+function initMemory(){
+  const emojis=['🐱','🐶','🦊','🐼','🐸','🐧','🦄','🐯'];
+  const deck=[...emojis,...emojis].sort(()=>Math.random()-0.5);
+  memCards = deck.map(e=>({emoji:e, flipped:false, matched:false}));
+  memFlipped=[]; memMatched=0;
+  renderMemory();
+}
+function renderMemory(){
+  const box=document.getElementById('memGrid');
+  box.innerHTML='';
+  memCards.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='memCard';
+    d.dataset.idx=i;
+    d.innerHTML = `<div class="memCard-inner">
+        <div class="memCard-face memCard-front">❓</div>
+        <div class="memCard-face memCard-back">${c.emoji}</div>
+      </div>`;
+    d.onclick=()=>flipMemory(i);
+    box.appendChild(d);
+  });
+}
+function updateMemCardEl(i){
+  const el = document.querySelector('#memGrid .memCard[data-idx="'+i+'"]');
+  if(!el) return;
+  el.classList.toggle('flipped', memCards[i].flipped);
+  el.classList.toggle('matched', memCards[i].matched);
+}
+function flipMemory(i){
+  const c=memCards[i];
+  if(c.flipped||c.matched||memFlipped.length===2) return;
+  c.flipped=true; memFlipped.push(i);
+  updateMemCardEl(i);
+  if(memFlipped.length===2){
+    const [a,b]=memFlipped;
+    if(memCards[a].emoji===memCards[b].emoji){
+      memCards[a].matched=true; memCards[b].matched=true;
+      memFlipped=[]; memMatched++;
+      updateMemCardEl(a); updateMemCardEl(b);
+      if(memMatched===8) bumpWins();
+    } else {
+      setTimeout(()=>{
+        memCards[a].flipped=false; memCards[b].flipped=false;
+        memFlipped=[];
+        updateMemCardEl(a); updateMemCardEl(b);
+      },700);
+    }
+  }
+}
+
+/* ---------- TIC TAC TOE ---------- */
+let tttBoard, tttTurn;
+function initTTT(){
+  tttBoard = Array(9).fill('');
+  tttTurn = '✕';
+  document.getElementById('tttStatus').textContent='نوبت: '+tttTurn;
+  renderTTT();
+}
+function renderTTT(){
+  const box=document.getElementById('tttGrid');
+  box.innerHTML='';
+  tttBoard.forEach((v,i)=>{
+    const d=document.createElement('div');
+    d.className='tttCell';
+    d.textContent=v;
+    d.onclick=()=>playTTT(i);
+    box.appendChild(d);
+  });
+}
+function playTTT(i){
+  if(tttBoard[i]) return;
+  tttBoard[i]=tttTurn;
+  const win = checkTTT();
+  if(win){
+    document.getElementById('tttStatus').textContent = win+' برنده شد! 🎉';
+    if(win==='✕') bumpWins();
+    renderTTT();
+    return;
+  }
+  if(tttBoard.every(c=>c)){
+    document.getElementById('tttStatus').textContent='مساوی شد';
+    renderTTT();
+    return;
+  }
+  tttTurn = tttTurn==='✕' ? '◯' : '✕';
+  document.getElementById('tttStatus').textContent='نوبت: '+tttTurn;
+  renderTTT();
+}
+function checkTTT(){
+  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for(const [a,b,c] of lines){
+    if(tttBoard[a] && tttBoard[a]===tttBoard[b] && tttBoard[b]===tttBoard[c]) return tttBoard[a];
+  }
+  return null;
+}
+async function bumpWins(){
+  let wins = await getVal('game-wins', false, 0);
+  wins++;
+  await setVal('game-wins', wins, false);
+  document.getElementById('statWins').textContent = wins;
+}
+
+/* ---------- SNAKE ---------- */
+let snakeTimer=null, snakeBody=[], snakeDir='right', snakeNextDir='right', snakeFood={x:5,y:5}, snakeScore=0;
+const SNAKE_CELLS=15, SNAKE_PX=20;
+function initSnake(){
+  if(snakeTimer) clearInterval(snakeTimer);
+  snakeBody=[{x:7,y:7},{x:6,y:7},{x:5,y:7}];
+  snakeDir='right'; snakeNextDir='right'; snakeScore=0;
+  placeSnakeFood();
+  document.getElementById('snakeScoreLabel').textContent='امتیاز: 0';
+  drawSnake();
+  snakeTimer=setInterval(stepSnake,150);
+}
+function placeSnakeFood(){
+  let ok=false;
+  while(!ok){
+    snakeFood={x:Math.floor(Math.random()*SNAKE_CELLS), y:Math.floor(Math.random()*SNAKE_CELLS)};
+    ok = !snakeBody.some(s=>s.x===snakeFood.x && s.y===snakeFood.y);
+  }
+}
+function setSnakeDir(d){
+  const opposite = {up:'down',down:'up',left:'right',right:'left'};
+  if(opposite[d]!==snakeDir) snakeNextDir=d;
+}
+function stepSnake(){
+  snakeDir=snakeNextDir;
+  const head={...snakeBody[0]};
+  if(snakeDir==='up') head.y--;
+  if(snakeDir==='down') head.y++;
+  if(snakeDir==='left') head.x--;
+  if(snakeDir==='right') head.x++;
+  const hitWall = head.x<0||head.x>=SNAKE_CELLS||head.y<0||head.y>=SNAKE_CELLS;
+  const hitSelf = snakeBody.some(s=>s.x===head.x && s.y===head.y);
+  if(hitWall || hitSelf){
+    clearInterval(snakeTimer); snakeTimer=null;
+    document.getElementById('snakeScoreLabel').textContent='باختی 💥 امتیاز: '+snakeScore;
+    return;
+  }
+  snakeBody.unshift(head);
+  if(head.x===snakeFood.x && head.y===snakeFood.y){
+    snakeScore++;
+    document.getElementById('snakeScoreLabel').textContent='امتیاز: '+snakeScore;
+    placeSnakeFood();
+    if(snakeScore===10) bumpWins();
+  } else {
+    snakeBody.pop();
+  }
+  drawSnake();
+}
+function drawSnake(){
+  const canvas=document.getElementById('snakeCanvas');
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#0d0d16';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#ffb14d';
+  ctx.fillRect(snakeFood.x*SNAKE_PX+1, snakeFood.y*SNAKE_PX+1, SNAKE_PX-2, SNAKE_PX-2);
+  ctx.fillStyle='#39ff8f';
+  snakeBody.forEach(s=> ctx.fillRect(s.x*SNAKE_PX+1, s.y*SNAKE_PX+1, SNAKE_PX-2, SNAKE_PX-2));
+}
+document.addEventListener('keydown',(e)=>{
+  if(document.getElementById('snakeview')?.style.display!=='block') return;
+  if(e.key==='ArrowUp') setSnakeDir('up');
+  if(e.key==='ArrowDown') setSnakeDir('down');
+  if(e.key==='ArrowLeft') setSnakeDir('left');
+  if(e.key==='ArrowRight') setSnakeDir('right');
+});
+
+/* ---------- SIMON (توالی رنگ‌ها) ---------- */
+const simonColors=['#ff6b4a','#8b6bff','#22c55e','#ffd23f'];
+let simonSeq=[], simonUserStep=0, simonPlaying=false;
+function initSimon(){
+  simonSeq=[]; simonUserStep=0; simonPlaying=false;
+  document.getElementById('simonStatus').textContent='برای شروع، لمس کن';
+  buildSimonGrid();
+}
+function buildSimonGrid(){
+  const box=document.getElementById('simonGrid');
+  box.innerHTML='';
+  simonColors.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='simonPad';
+    d.style.background=c; d.style.color=c;
+    d.dataset.idx=i;
+    d.onclick=()=>simonPress(i);
+    box.appendChild(d);
+  });
+}
+function simonPress(i){
+  if(simonPlaying) return;
+  if(simonSeq.length===0){ nextSimonRound(); return; }
+  if(i===simonSeq[simonUserStep]){
+    simonUserStep++;
+    if(simonUserStep===simonSeq.length){
+      document.getElementById('simonStatus').textContent='آفرین! دور بعد...';
+      setTimeout(nextSimonRound, 700);
+    }
+  } else {
+    document.getElementById('simonStatus').textContent='باختی 😅 امتیاز: '+(simonSeq.length-1)+' — دوباره لمس کن';
+    simonSeq=[]; simonUserStep=0;
+  }
+}
+function nextSimonRound(){
+  simonSeq.push(Math.floor(Math.random()*4));
+  simonUserStep=0;
+  playSimonSequence();
+}
+async function playSimonSequence(){
+  simonPlaying=true;
+  document.getElementById('simonStatus').textContent='نگاه کن...';
+  for(const idx of simonSeq){ await litPad(idx); }
+  simonPlaying=false;
+  document.getElementById('simonStatus').textContent='نوبت توئه، تکرار کن';
+  if(simonSeq.length===5) bumpWins();
+}
+function litPad(idx){
+  return new Promise(resolve=>{
+    const pad=document.querySelector('#simonGrid .simonPad[data-idx="'+idx+'"]');
+    pad.classList.add('lit');
+    setTimeout(()=>{ pad.classList.remove('lit'); setTimeout(resolve,150); }, 450);
+  });
+}
+
+/* ---------- QUIZ ---------- */
+const quizQuestions = [
+  {q:'انیمه معمولاً از روی چه نوع اثری ساخته میشه؟', options:['مانگا یا لایت‌ناول','فقط بازی ویدیویی','فقط فیلم‌نامه‌ی اورجینال','همیشه رمان غربی'], correct:0},
+  {q:'استودیو جیبلی بیشتر با چه سبکی شناخته میشه؟', options:['اکشن خشن و خونین','انیمیشن سینمایی فانتزی و داستانی','فقط انیمه‌ی ورزشی','فقط سریال‌های کوتاه تبلیغاتی'], correct:1},
+  {q:'"فصل" یا Season تو یه سریال انیمه یعنی چی؟', options:['یه بخش از قسمت‌ها که پشت‌سرهم پخش میشن','فقط قسمت آخر داستان','یه فیلم کاملاً جدا','دوبله‌ی جدید همون قسمت'], correct:0},
+  {q:'"OVA" به چه معناست؟', options:['قسمتی که مستقیم برای ویدیو ساخته میشه، نه پخش تلویزیونی','اسم یه ژانر خاصه','مخفف اسم یه استودیوعه','نوعی زیرنویسه'], correct:0},
+  {q:'کدوم یکی از این‌ها یه ژانر شناخته‌شده‌ی انیمه‌ست؟', options:['ایسکای (دنیای موازی)','فوتبال‌گرام','رئال‌نویس','هیچکدام'], correct:0},
+  {q:'به نویسنده و طراح مانگا چی می‌گن؟', options:['مانگاکا','سی‌یو','اوتاکو','فن‌ساب'], correct:0},
+];
+let quizIdx=0, quizScore=0, quizOrder=[];
+function initQuiz(){
+  quizIdx=0; quizScore=0;
+  quizOrder = [...quizQuestions.keys()].sort(()=>Math.random()-0.5);
+  document.getElementById('quizScoreLabel').textContent='امتیاز: 0';
+  showQuizQuestion();
+}
+function showQuizQuestion(){
+  if(quizIdx>=quizOrder.length){
+    document.getElementById('quizQuestion').textContent='تموم شد! امتیاز نهایی: '+quizScore+' از '+quizOrder.length;
+    document.getElementById('quizOptions').innerHTML='';
+    if(quizScore>=4) bumpWins();
+    return;
+  }
+  const q = quizQuestions[quizOrder[quizIdx]];
+  document.getElementById('quizQuestion').textContent = (quizIdx+1)+'. '+q.q;
+  const box = document.getElementById('quizOptions');
+  box.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const d=document.createElement('div');
+    d.className='quizOption';
+    d.textContent=opt;
+    d.onclick=()=>answerQuiz(i,q.correct,d);
+    box.appendChild(d);
+  });
+}
+function answerQuiz(i, correct, el){
+  document.querySelectorAll('.quizOption').forEach(o=>o.style.pointerEvents='none');
+  if(i===correct){ el.classList.add('correct'); quizScore++; }
+  else{ el.classList.add('wrong'); document.querySelectorAll('.quizOption')[correct].classList.add('correct'); }
+  document.getElementById('quizScoreLabel').textContent='امتیاز: '+quizScore;
+  setTimeout(()=>{ quizIdx++; showQuizQuestion(); }, 900);
+}
+
+/* ---------- REFLEX ---------- */
+let reflexTimer=null, reflexCountdown=null, reflexScore=0, reflexActive=-1, reflexSeconds=20;
+function initReflex(){
+  reflexScore=0; reflexSeconds=20; reflexActive=-1;
+  document.getElementById('reflexScoreLabel').textContent='امتیاز: 0';
+  document.getElementById('reflexTimeLabel').textContent='⏱ 20';
+  const box=document.getElementById('reflexGrid');
+  box.innerHTML='';
+  for(let i=0;i<9;i++){
+    const c=document.createElement('div');
+    c.className='reflexCell';
+    c.onclick=()=>hitReflex(i);
+    box.appendChild(c);
+  }
+  if(reflexTimer) clearInterval(reflexTimer);
+  if(reflexCountdown) clearInterval(reflexCountdown);
+  reflexTimer = setInterval(spawnReflex, 800);
+  reflexCountdown = setInterval(()=>{
+    reflexSeconds--;
+    document.getElementById('reflexTimeLabel').textContent='⏱ '+reflexSeconds;
+    if(reflexSeconds<=0) endReflex();
+  }, 1000);
+}
+function spawnReflex(){
+  const cells=document.querySelectorAll('#reflexGrid .reflexCell');
+  if(!cells.length) return;
+  cells.forEach(c=>c.classList.remove('active'));
+  reflexActive = Math.floor(Math.random()*9);
+  cells[reflexActive].classList.add('active');
+}
+function hitReflex(i){
+  if(i===reflexActive){
+    reflexScore++;
+    document.getElementById('reflexScoreLabel').textContent='امتیاز: '+reflexScore;
+    document.querySelectorAll('#reflexGrid .reflexCell')[i].classList.remove('active');
+    reflexActive=-1;
+  }
+}
+function endReflex(){
+  clearInterval(reflexTimer); clearInterval(reflexCountdown);
+  reflexTimer=null; reflexCountdown=null;
+  document.querySelectorAll('#reflexGrid .reflexCell').forEach(c=>c.classList.remove('active'));
+  document.getElementById('reflexTimeLabel').textContent='تمام شد 🏁';
+  if(reflexScore>=8) bumpWins();
+}
+
+/* ---------- THEMES ---------- */
+const themes = [
+  {name:'بنفش‌شب', icon:'🌌', bg1:'139,107,255', bg2:'255,107,74',
+    header:'linear-gradient(135deg,#4f2fd9 0%, #8b6bff 55%, #ff4fa3 130%)',
+    vars:{bg:'#0b0a13',card:'#1a1626',card2:'#211c30',text:'#f5f2ff',muted:'#9a8fc2',line:'#2a2340',accent:'#ff6b4a',accent2:'#ffb14d',purple:'#8b6bff',purple2:'#4f2fd9'}},
+  {name:'اقیانوسی', icon:'🌊', bg1:'56,189,248', bg2:'99,102,241',
+    header:'linear-gradient(135deg,#0369a1 0%, #38bdf8 55%, #6366f1 130%)',
+    vars:{bg:'#070f18',card:'#0f2233',card2:'#123049',text:'#eaf6ff',muted:'#8fb3cc',line:'#1c3d55',accent:'#38bdf8',accent2:'#7dd3fc',purple:'#6366f1',purple2:'#3730a3'}},
+  {name:'آتشین', icon:'🔥', bg1:'255,107,74', bg2:'255,177,77',
+    header:'linear-gradient(135deg,#7c2d12 0%, #ff6b4a 55%, #ffb14d 130%)',
+    vars:{bg:'#160805',card:'#2a120a',card2:'#3a190f',text:'#fff1e8',muted:'#d8a48e',line:'#4a2418',accent:'#ff6b4a',accent2:'#ffb14d',purple:'#ff8a5c',purple2:'#c2410c'}},
+  {name:'جنگلی', icon:'🌿', bg1:'34,197,94', bg2:'20,184,166',
+    header:'linear-gradient(135deg,#065f46 0%, #22c55e 55%, #14b8a6 130%)',
+    vars:{bg:'#05130d',card:'#0d2118',card2:'#123023',text:'#eafff5',muted:'#89c2ab',line:'#1c3d2c',accent:'#22c55e',accent2:'#5eead4',purple:'#14b8a6',purple2:'#065f46'}},
+  {name:'روشن', icon:'☀️', bg1:'139,107,255', bg2:'255,177,77',
+    header:'linear-gradient(135deg,#7c5cff 0%, #ff6b4a 130%)',
+    vars:{bg:'#f4f2fb',card:'#ffffff',card2:'#f1eefc',text:'#1a1626',muted:'#69607f',line:'#e2dbf5',accent:'#ff6b4a',accent2:'#e8590c',purple:'#7c5cff',purple2:'#5b3fe0'}},
+  {name:'ماتریکس', icon:'🟩', bg1:'0,255,102', bg2:'0,255,102', matrix:true,
+    header:'linear-gradient(135deg,#000000 0%, #002a12 100%)',
+    vars:{bg:'#000000',card:'#020c05',card2:'#031a09',text:'#baffcf',muted:'#3fae6c',line:'#0a3a1c',accent:'#00ff7f',accent2:'#39ff14',purple:'#00ff7f',purple2:'#009944'}},
+];
+let themeIdx = 0;
+
+function applyTheme(i){
+  const t = themes[i];
+  const root = document.documentElement.style;
+  Object.entries(t.vars).forEach(([k,v])=>root.setProperty('--'+k, v));
+  document.body.style.background = t.matrix
+    ? 'var(--bg)'
+    : `radial-gradient(900px 500px at 100% -10%, rgba(${t.bg1},.25), transparent 60%),
+       radial-gradient(700px 400px at -10% 20%, rgba(${t.bg2},.15), transparent 55%),
+       var(--bg)`;
+  document.querySelector('header').style.background = t.header;
+  document.getElementById('themeBtn').textContent = t.icon+' '+t.name;
+  document.getElementById('matrixCanvas').classList.toggle('on', !!t.matrix);
+  if(t.matrix) startMatrix(); else stopMatrix();
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.toggle('active', +s.dataset.idx===i));
+}
+function buildThemePanel(){
+  const panel = document.getElementById('themePanel');
+  panel.innerHTML = themes.map((t,i)=>
+    `<div class="swatch" data-idx="${i}" style="background:${t.header}" onclick="selectTheme(${i})" title="${t.name}">${t.icon}</div>`
+  ).join('') + `<input type="color" id="customColorInput" value="#ff6b4a" oninput="setCustomColor(this.value)" title="رنگ دلخواه" style="width:42px;height:42px;border-radius:13px;border:2px solid rgba(255,255,255,.25);padding:0;background:none;cursor:pointer;">`;
+}
+function toggleThemePanel(){
+  document.getElementById('themePanel').classList.toggle('open');
+}
+async function selectTheme(i){
+  themeIdx = i;
+  applyTheme(i);
+  await setVal('theme-idx', i, false);
+}
+async function setCustomColor(v){
+  document.documentElement.style.setProperty('--accent', v);
+  document.documentElement.style.setProperty('--accent2', v);
+  await setVal('custom-accent', v, false);
+}
+
+/* ---------- MATRIX RAIN (animated black+green background) ---------- */
+let matrixTimer = null;
+function startMatrix(){
+  const canvas = document.getElementById('matrixCanvas');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const chars = 'アニメ0123456789ABCDEF';
+  const fontSize = 16;
+  const columns = Math.max(1, Math.floor(canvas.width / fontSize));
+  const drops = Array(columns).fill(1);
+  if(matrixTimer) clearInterval(matrixTimer);
+  matrixTimer = setInterval(()=>{
+    ctx.fillStyle = 'rgba(0,0,0,.08)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#00ff7f';
+    ctx.font = fontSize+'px monospace';
+    drops.forEach((y,i)=>{
+      const ch = chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(ch, i*fontSize, y*fontSize);
+      if(y*fontSize > canvas.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    });
+  }, 45);
+}
+function stopMatrix(){
+  if(matrixTimer){ clearInterval(matrixTimer); matrixTimer=null; }
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('matrixCanvas').classList.contains('on')) startMatrix();
+});
+
+/* ---------- REELS ---------- */
+let reels = [];
+function toEmbedUrl(url){
+  try{
+    if(url.includes('youtube.com') || url.includes('youtu.be')){
+      let id = '';
+      if(url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split(/[?&]/)[0];
+      else if(url.includes('shorts/')) id = url.split('shorts/')[1].split(/[?&]/)[0];
+      else if(url.includes('v=')) id = url.split('v=')[1].split('&')[0];
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if(url.includes('aparat.com')){
+      const parts = url.split('/');
+      const id = parts[parts.length-1];
+      return `https://www.aparat.com/video/video/embed/videohash/${id}/vt/frame`;
+    }
+  }catch(e){}
+  return null;
+}
+async function loadReels(){
+  reels = await getVal('reels-list', true, []);
+  renderReels();
+}
+function renderReels(){
+  const box = document.getElementById('reelsList');
+  box.innerHTML = reels.length ? '' : '<p class="muted-small">هنوز ریلزی نیست، اولین نفر باش 🎬</p>';
+  [...reels].reverse().forEach((r)=>{
+    const i = reels.indexOf(r);
+    const embed = toEmbedUrl(r.link);
+    const card = document.createElement('div');
+    card.className='reel-card';
+    card.innerHTML = `
+      ${embed ? `<iframe class="reel-embed" src="${embed}" allowfullscreen frameborder="0"></iframe>` : `<div class="reel-embed" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;">لینک نامعتبر</div>`}
+      <div class="reel-body">
+        <p>${escapeHtml(r.caption || '')}</p>
+        <div class="reel-actions">
+          <span class="like-btn ${r.liked?'liked':''}" onclick="toggleLike(${i})">❤️ ${r.likes||0}</span>
+          ${isAdmin ? `<span class="pill" onclick="adminDeleteReel(${i})">🗑</span>` : ''}
+        </div>
+      </div>`;
+    box.appendChild(card);
+  });
+}
+async function addReel(){
+  const link = document.getElementById('reelLink').value.trim();
+  const caption = document.getElementById('reelCaption').value.trim();
+  if(!link) return;
+  reels.push({link, caption, likes:0, liked:false});
+  await setVal('reels-list', reels, true);
+  document.getElementById('reelLink').value='';
+  document.getElementById('reelCaption').value='';
+  renderReels();
+}
+async function toggleLike(i){
+  reels[i].liked = !reels[i].liked;
+  reels[i].likes = (reels[i].likes||0) + (reels[i].liked ? 1 : -1);
+  await setVal('reels-list', reels, true);
+  renderReels();
+}
+function addChatBubble(text, who, loading){
+  const box=document.getElementById('aiChat');
+  const row=document.createElement('div');
+  row.className='chat-row'+(who==='user'?' user-row':'');
+  if(who==='bot'){
+    const av=document.createElement('div');
+    av.className='bot-avatar';
+    av.textContent='✦';
+    row.appendChild(av);
+  }
+  const b=document.createElement('div');
+  b.className='chat-bubble '+who+(loading?' loading':'');
+  b.textContent=text;
+  row.appendChild(b);
+  box.appendChild(row);
+  box.scrollTop = box.scrollHeight;
+  return b;
+}
+async function sendAI(){
+  const input=document.getElementById('aiInput');
+  const val=input.value.trim();
+  if(!val) return;
+  addChatBubble(val,'user');
+  input.value='';
+  const loadingBubble = addChatBubble('در حال فکر کردن...','bot',true);
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:'تو دستیار همه‌کاره‌ی اپلیکیشن Anime Night هستی، شبیه یه دستیار هوش مصنوعی واقعی. به هر سوالی (انیمه، درسی، عمومی، هرچی) به فارسی، خودمونی، مفید و با جزئیات کافی جواب بده — محدود به موضوع انیمه نیستی. فقط یه استثنا: هرگز لینک دانلود/پخش انیمه یا آدرس سایت‌های پایرسی نده؛ در اون مورد فقط بگو "برای پخش قانونی از کرانچی‌رول یا سرویس‌های مجاز استفاده کن".',
+        messages:[{role:'user', content: val}]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content||[]).map(c=>c.text||'').join('\n') || 'یه مشکلی پیش اومد، دوباره امتحان کن.';
+    loadingBubble.classList.remove('loading');
+    loadingBubble.textContent = text;
+  }catch(e){
+    loadingBubble.classList.remove('loading');
+    loadingBubble.textContent = 'اتصال برقرار نشد، دوباره امتحان کن.';
+  }
+}
+document.getElementById('aiInput')?.addEventListener('keydown', e=>{ if(e.key==='Enter') sendAI(); });
+
+async function sendAIImage(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async ()=>{
+    const base64 = reader.result.split(',')[1];
+    const box = document.getElementById('aiChat');
+    const row = document.createElement('div');
+    row.style.display='flex'; row.style.justifyContent='flex-end'; row.style.marginBottom='8px';
+    row.innerHTML = `<img src="${reader.result}" style="max-width:140px;border-radius:12px;" />`;
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+    const loadingBubble = addChatBubble('در حال بررسی عکس...','bot',true);
+    try{
+      const res = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:600,
+          messages:[{
+            role:'user',
+            content:[
+              {type:'image', source:{type:'base64', media_type: file.type || 'image/jpeg', data: base64}},
+              {type:'text', text:'این تصویر از کدوم انیمه‌ست؟ اسم انیمه (و اگه می‌دونی اسم قسمت/صحنه) رو به فارسی و کوتاه بگو. اگه مطمئن نیستی، نزدیک‌ترین حدست رو با «احتمالاً» بگو.'}
+            ]
+          }]
+        })
+      });
+      const data = await res.json();
+      const text = (data.content||[]).map(c=>c.text||'').join('\n') || 'نتونستم تشخیص بدم، یه عکس واضح‌تر امتحان کن.';
+      loadingBubble.classList.remove('loading');
+      loadingBubble.textContent = text;
+    }catch(e){
+      loadingBubble.classList.remove('loading');
+      loadingBubble.textContent = 'اتصال برقرار نشد، دوباره امتحان کن.';
+    }
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('aiImageInput').value = '';
+}
+
+/* ---------- AUTH (sign up / log in — local to this browser only) ---------- */
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+let authMode = 'signup';
+function switchAuthMode(mode){
+  authMode = mode;
+  document.getElementById('authError').textContent = '';
+  document.getElementById('authTitle').textContent = mode==='signup' ? 'ثبت‌نام' : 'ورود';
+  document.getElementById('authSubmitBtn').textContent = mode==='signup' ? 'ثبت‌نام' : 'ورود';
+  document.getElementById('authSwitchText').innerHTML = mode==='signup'
+    ? 'حساب داری؟ <span onclick="switchAuthMode(\'login\')" style="color:var(--accent2);cursor:pointer;">وارد شو</span>'
+    : 'حساب نداری؟ <span onclick="switchAuthMode(\'signup\')" style="color:var(--accent2);cursor:pointer;">ثبت‌نام کن</span>';
+}
+async function submitAuth(){
+  const email = document.getElementById('authEmail').value.trim();
+  const pass = document.getElementById('authPass').value;
+  const errBox = document.getElementById('authError');
+  errBox.textContent = '';
+  if(!email || !pass){ errBox.textContent = 'ایمیل و رمز رو پر کن.'; return; }
+  if(pass.length < 4){ errBox.textContent = 'رمز حداقل ۴ کاراکتر باشه.'; return; }
+  const hash = await sha256(pass);
+  const existing = await getVal('account', false, null);
+  if(authMode === 'signup'){
+    if(existing){ errBox.textContent = 'رو این مرورگر قبلاً حساب ساختی، برو «ورود».'; return; }
+    const uid = 'u_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+    await setVal('account', {email, hash, uid}, false);
+    await setVal('session', true, false);
+    await setVal('profile', {name: email.split('@')[0], email, uid, subscription:null}, false);
+    await addUserToRegistry({id: uid, email, name: email.split('@')[0], role:'user', banned:false, joinedAt: Date.now()});
+    document.getElementById('authOverlay').style.display = 'none';
+    await loadProfile();
+  } else {
+    if(!existing || existing.email !== email || existing.hash !== hash){
+      errBox.textContent = 'ایمیل یا رمز اشتباهه.'; return;
+    }
+    const registry = await getVal('users-registry', true, []);
+    const rec = registry.find(u=>u.id===existing.uid);
+    if(rec && rec.banned){ errBox.textContent = 'این حساب مسدود شده. با پشتیبانی تماس بگیر.'; return; }
+    await setVal('session', true, false);
+    document.getElementById('authOverlay').style.display = 'none';
+    await loadProfile();
+  }
+}
+async function addUserToRegistry(user){
+  const registry = await getVal('users-registry', true, []);
+  registry.push(user);
+  await setVal('users-registry', registry, true);
+  await bumpStat('stat-total-users', 1);
+}
+async function logout(){
+  await setVal('session', false, false);
+  document.getElementById('authOverlay').style.display = 'flex';
+  switchAuthMode('login');
+}
+async function checkSession(){
+  const session = await getVal('session', false, false);
+  const existing = await getVal('account', false, null);
+  if(session && existing && existing.uid){
+    const registry = await getVal('users-registry', true, []);
+    const rec = registry.find(u=>u.id===existing.uid);
+    if(rec && rec.banned){
+      await setVal('session', false, false);
+      document.getElementById('authOverlay').style.display = 'flex';
+      switchAuthMode('login');
+      document.getElementById('authError').textContent = 'این حساب مسدود شده.';
+      return;
+    }
+  }
+  document.getElementById('authOverlay').style.display = session ? 'none' : 'flex';
+  if(!session && existing) switchAuthMode('login');
+  await bumpStat('stat-total-views', 1);
+}
+async function bumpStat(key, by){
+  try{
+    const cur = await getVal(key, true, 0);
+    await setVal(key, cur + by, true);
+  }catch(e){}
+}
+
+/* ---------- ADMIN PANEL (moderates shared community content) ---------- */
+let isAdmin = false;
+const DEFAULT_ADMIN_CODE = 'night2026';
+let logoTapCount = 0, logoTapTimer = null;
+function handleLogoTap(){
+  logoTapCount++;
+  clearTimeout(logoTapTimer);
+  logoTapTimer = setTimeout(()=>{ logoTapCount = 0; }, 1500);
+  if(logoTapCount >= 5){
+    logoTapCount = 0;
+    const code = prompt('کد مدیر:');
+    if(code === null) return;
+    checkAdminCode(code);
+  }
+}
+async function checkAdminCode(code){
+  const stored = await getVal('admin-code', true, DEFAULT_ADMIN_CODE);
+  if(code === stored){
+    isAdmin = true;
+    document.getElementById('adminCard').style.display = 'block';
+    await refreshAdminCounts();
+    renderPosts();
+    renderReels();
+    renderNews();
+    renderRequests();
+    showTab('profile');
+    showAdmSection('dash');
+    logAdminAction('ورود به پنل مدیریت');
+    alert('وارد پنل مدیریت شدی ✅');
+  } else {
+    alert('کد اشتباهه.');
+  }
+}
+document.getElementById('mainLogo')?.addEventListener('click', handleLogoTap);
+
+/* ---- admin sub-navigation ---- */
+function showAdmSection(name){
+  document.querySelectorAll('.adm-section').forEach(s=>s.style.display='none');
+  document.getElementById('adm-'+name).style.display='block';
+  document.querySelectorAll('.adm-nav').forEach(b=>b.classList.toggle('on', b.dataset.adm===name));
+  if(name==='dash') refreshAdminCounts();
+  if(name==='users') renderAdminUsers();
+  if(name==='billing') renderAdminPayments();
+  if(name==='tickets') renderAdminTickets();
+  if(name==='content'){ renderNews(); renderEpisodesList(); }
+  if(name==='settings') loadSiteSettingsIntoForm();
+  if(name==='security') renderAdminLog();
+}
+
+/* ---- dashboard ---- */
+async function refreshAdminCounts(){
+  const users = await getVal('users-registry', true, []);
+  const payments = await getVal('payments-registry', true, []);
+  const views = await getVal('stat-total-views', true, 0);
+  const tickets = await getVal('support-tickets', true, []);
+  document.getElementById('admPosts').textContent = posts.length;
+  document.getElementById('admReels').textContent = reels.length;
+  document.getElementById('admReqs').textContent = requests.length;
+  document.getElementById('admUsers').textContent = users.length;
+  document.getElementById('admViews').textContent = views;
+  document.getElementById('admSubs').textContent = users.filter(u=>u.hasSub).length;
+  document.getElementById('admRevenue').textContent = payments.reduce((s,p)=>s+(p.amount||0),0).toLocaleString('fa-IR');
+  document.getElementById('admTickets').textContent = tickets.filter(t=>t.status==='open').length;
+  renderSignupChart(users);
+  renderAdminActivity(payments, users, tickets);
+}
+function renderSignupChart(users){
+  const box = document.getElementById('admSignupChart');
+  if(!box) return;
+  const days = [...Array(7)].map((_,i)=>{
+    const d = new Date(); d.setDate(d.getDate()-(6-i)); d.setHours(0,0,0,0);
+    return d.getTime();
+  });
+  const counts = days.map((dStart,i)=>{
+    const dEnd = dStart + 86400000;
+    return users.filter(u=>u.joinedAt>=dStart && u.joinedAt<dEnd).length;
+  });
+  const max = Math.max(1, ...counts);
+  box.innerHTML = counts.map(c=>`<div style="flex:1;background:linear-gradient(180deg,var(--accent2),var(--accent));border-radius:4px;height:${Math.max(4,(c/max)*70)}px;" title="${c}"></div>`).join('');
+}
+function renderAdminActivity(payments, users, tickets){
+  const box = document.getElementById('admActivityList');
+  if(!box) return;
+  const events = [
+    ...payments.map(p=>({t:`💳 خرید اشتراک ${p.plan} — ${escapeHtml(p.email||'')}`, at:p.date})),
+    ...users.map(u=>({t:`👤 عضویت جدید — ${escapeHtml(u.email||'')}`, at:u.joinedAt})),
+    ...tickets.map(t=>({t:`🎫 تیکت جدید (${t.type})`, at:t.createdAt})),
+  ].sort((a,b)=>b.at-a.at).slice(0,10);
+  box.innerHTML = events.length ? events.map(e=>`<div class="list-item"><span style="font-size:12px;">${e.t}</span><span class="muted-small">${new Date(e.at).toLocaleDateString('fa-IR')}</span></div>`).join('') : '<p class="muted-small">فعالیتی ثبت نشده.</p>';
+}
+
+/* ---- users management ---- */
+async function renderAdminUsers(){
+  const box = document.getElementById('admUsersList');
+  if(!box) return;
+  const q = (document.getElementById('admUserSearch')?.value || '').trim().toLowerCase();
+  const users = await getVal('users-registry', true, []);
+  const filtered = users.filter(u=> !q || u.email.toLowerCase().includes(q) || (u.name||'').toLowerCase().includes(q));
+  box.innerHTML = filtered.length ? '' : '<p class="muted-small">کاربری پیدا نشد.</p>';
+  filtered.forEach(u=>{
+    const i = users.indexOf(u);
+    const d = document.createElement('div');
+    d.className='list-item';
+    d.style.flexDirection='column'; d.style.alignItems='stretch';
+    d.innerHTML = `
+      <div class="row" style="justify-content:space-between;">
+        <span>${escapeHtml(u.name||u.email)} ${u.banned?'<span style="color:#ff8080;">(مسدود)</span>':''}${u.hasSub?' 💎':''}</span>
+        <span class="muted-small">${new Date(u.joinedAt).toLocaleDateString('fa-IR')}</span>
+      </div>
+      <div class="muted-small" style="margin:4px 0;">${escapeHtml(u.email)}</div>
+      <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:4px;">
+        <select class="filter-select" onchange="adminChangeRole(${i}, this.value)" style="max-width:130px;">
+          <option value="user" ${u.role==='user'?'selected':''}>کاربر عادی</option>
+          <option value="moderator" ${u.role==='moderator'?'selected':''}>ناظر</option>
+          <option value="admin" ${u.role==='admin'?'selected':''}>مدیر</option>
+        </select>
+        <span class="pill" onclick="adminToggleBan(${i})">${u.banned?'رفع مسدودیت':'مسدود کردن'}</span>
+        <span class="pill" onclick="adminDeleteUser(${i})">🗑 حذف</span>
+      </div>`;
+    box.appendChild(d);
+  });
+}
+async function adminToggleBan(i){
+  const users = await getVal('users-registry', true, []);
+  users[i].banned = !users[i].banned;
+  await setVal('users-registry', users, true);
+  logAdminAction((users[i].banned?'مسدود کردن ':'رفع مسدودیت ')+users[i].email);
+  renderAdminUsers();
+}
+async function adminChangeRole(i, role){
+  const users = await getVal('users-registry', true, []);
+  users[i].role = role;
+  await setVal('users-registry', users, true);
+  logAdminAction('تغییر نقش '+users[i].email+' به '+role);
+  renderAdminUsers();
+}
+async function adminDeleteUser(i){
+  if(!confirm('حذف این کاربر از فهرست؟')) return;
+  const users = await getVal('users-registry', true, []);
+  const removed = users.splice(i,1)[0];
+  await setVal('users-registry', users, true);
+  logAdminAction('حذف کاربر '+(removed?.email||''));
+  renderAdminUsers();
+  refreshAdminCounts();
+}
+
+/* ---- billing/payments ---- */
+async function renderAdminPayments(){
+  const box = document.getElementById('admPaymentsList');
+  if(!box) return;
+  const payments = await getVal('payments-registry', true, []);
+  box.innerHTML = payments.length ? '' : '<p class="muted-small">هنوز تراکنشی ثبت نشده.</p>';
+  [...payments].reverse().forEach(p=>{
+    const d = document.createElement('div');
+    d.className='list-item';
+    d.innerHTML = `<span>${escapeHtml(p.email||'')} — ${escapeHtml(p.plan)}</span><span class="muted-small">${(p.amount||0).toLocaleString('fa-IR')} تومان · ${new Date(p.date).toLocaleDateString('fa-IR')}</span>`;
+    box.appendChild(d);
+  });
+}
+
+/* ---- episode announcements ---- */
+async function renderEpisodesList(){
+  const box = document.getElementById('admEpisodesList');
+  if(!box) return;
+  const eps = await getVal('episode-announcements', true, []);
+  box.innerHTML = eps.length ? '' : '<p class="muted-small">اعلانی ثبت نشده.</p>';
+  eps.forEach((e,i)=>{
+    const d = document.createElement('div');
+    d.className='list-item';
+    d.innerHTML = `<span>${escapeHtml(e.anime)} — قسمت ${escapeHtml(String(e.number))}</span><span class="pill" onclick="adminDeleteEpisode(${i})">🗑</span>`;
+    box.appendChild(d);
+  });
+}
+async function adminAddEpisodeAnnounce(){
+  const anime = document.getElementById('admEpAnime').value.trim();
+  const number = document.getElementById('admEpNumber').value.trim();
+  if(!anime || !number) return;
+  const eps = await getVal('episode-announcements', true, []);
+  eps.unshift({anime, number, date: Date.now()});
+  await setVal('episode-announcements', eps, true);
+  document.getElementById('admEpAnime').value=''; document.getElementById('admEpNumber').value='';
+  renderEpisodesList();
+  logAdminAction('اعلان قسمت جدید: '+anime+' #'+number);
+}
+async function adminDeleteEpisode(i){
+  const eps = await getVal('episode-announcements', true, []);
+  eps.splice(i,1);
+  await setVal('episode-announcements', eps, true);
+  renderEpisodesList();
+}
+
+/* ---- support tickets ---- */
+async function submitTicket(){
+  const type = document.getElementById('ticketType').value;
+  const msg = document.getElementById('ticketMsg').value.trim();
+  if(!msg) return;
+  const profile = await getVal('profile', false, {email:''});
+  const tickets = await getVal('support-tickets', true, []);
+  tickets.push({type, message: msg, email: profile.email||'', status:'open', createdAt: Date.now()});
+  await setVal('support-tickets', tickets, true);
+  document.getElementById('ticketMsg').value='';
+  alert('✅ تیکت ارسال شد.');
+}
+async function renderAdminTickets(){
+  const box = document.getElementById('admTicketsList');
+  if(!box) return;
+  const tickets = await getVal('support-tickets', true, []);
+  const typeMap = {bug:'🐞 باگ', suggestion:'💡 پیشنهاد', contact:'✉️ تماس'};
+  box.innerHTML = tickets.length ? '' : '<p class="muted-small">تیکتی ثبت نشده.</p>';
+  [...tickets].reverse().forEach((t)=>{
+    const i = tickets.indexOf(t);
+    const d = document.createElement('div');
+    d.className='card';
+    d.style.padding='12px';
+    d.innerHTML = `
+      <div class="row" style="justify-content:space-between;">
+        <span class="muted-small">${typeMap[t.type]||t.type} · ${escapeHtml(t.email)}</span>
+        <span class="muted-small">${t.status==='open'?'🟠 باز':'✅ بسته'}</span>
+      </div>
+      <p style="margin:6px 0;font-size:13px;">${escapeHtml(t.message)}</p>
+      <span class="pill" onclick="adminToggleTicket(${i})">${t.status==='open'?'بستن تیکت':'بازکردن تیکت'}</span>`;
+    box.appendChild(d);
+  });
+}
+async function adminToggleTicket(i){
+  const tickets = await getVal('support-tickets', true, []);
+  tickets[i].status = tickets[i].status==='open' ? 'closed' : 'open';
+  await setVal('support-tickets', tickets, true);
+  renderAdminTickets();
+  refreshAdminCounts();
+}
+
+/* ---- site settings ---- */
+const DEFAULT_SITE_SETTINGS = {siteName:'Anime Night', logoEmoji:'🎌', seoDesc:'پیگیری، بازی، گفتگو و اخبار انیمه — یه‌جا', favicon:'🎌', social:{instagram:'',telegram:'',discord:'',twitter:''}};
+async function loadSiteSettings(){
+  const s = await getVal('site-settings', true, DEFAULT_SITE_SETTINGS);
+  document.title = s.siteName || 'Anime Night';
+  const linkIcon = document.querySelector('link[rel="icon"]') || (()=>{ const l=document.createElement('link'); l.rel='icon'; document.head.appendChild(l); return l; })();
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='50%' y='50%' font-size='24' text-anchor='middle' dominant-baseline='central'>${s.favicon||'🎌'}</text></svg>`;
+  linkIcon.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if(!metaDesc){ metaDesc = document.createElement('meta'); metaDesc.name='description'; document.head.appendChild(metaDesc); }
+  metaDesc.content = s.seoDesc || '';
+  return s;
+}
+function loadSiteSettingsIntoForm(){
+  getVal('site-settings', true, DEFAULT_SITE_SETTINGS).then(s=>{
+    document.getElementById('admSiteName').value = s.siteName||'';
+    document.getElementById('admLogoEmoji').value = s.logoEmoji||'';
+    document.getElementById('admSeoDesc').value = s.seoDesc||'';
+    document.getElementById('admFavicon').value = s.favicon||'';
+    document.getElementById('admSocialInsta').value = s.social?.instagram||'';
+    document.getElementById('admSocialTelegram').value = s.social?.telegram||'';
+    document.getElementById('admSocialDiscord').value = s.social?.discord||'';
+    document.getElementById('admSocialTwitter').value = s.social?.twitter||'';
+  });
+}
+async function adminSaveSettings(){
+  const s = {
+    siteName: document.getElementById('admSiteName').value.trim() || 'Anime Night',
+    logoEmoji: document.getElementById('admLogoEmoji').value.trim() || '🎌',
+    seoDesc: document.getElementById('admSeoDesc').value.trim(),
+    favicon: document.getElementById('admFavicon').value.trim() || '🎌',
+    social: {
+      instagram: document.getElementById('admSocialInsta').value.trim(),
+      telegram: document.getElementById('admSocialTelegram').value.trim(),
+      discord: document.getElementById('admSocialDiscord').value.trim(),
+      twitter: document.getElementById('admSocialTwitter').value.trim(),
+    }
+  };
+  await setVal('site-settings', s, true);
+  await loadSiteSettings();
+  logAdminAction('ذخیره تنظیمات سایت');
+  alert('✅ تنظیمات ذخیره شد.');
+}
+
+/* ---- security ---- */
+async function adminChangeCode(){
+  const val = document.getElementById('admNewCode').value.trim();
+  if(val.length < 4){ alert('کد باید حداقل ۴ کاراکتر باشه.'); return; }
+  await setVal('admin-code', val, true);
+  document.getElementById('admNewCode').value='';
+  logAdminAction('تغییر کد ورود مدیر');
+  alert('✅ کد مدیر عوض شد.');
+}
+async function logAdminAction(text){
+  try{
+    const log = await getVal('admin-log', true, []);
+    log.unshift({text, at: Date.now()});
+    await setVal('admin-log', log.slice(0,50), true);
+  }catch(e){}
+}
+async function renderAdminLog(){
+  const box = document.getElementById('admLogList');
+  if(!box) return;
+  const log = await getVal('admin-log', true, []);
+  box.innerHTML = log.length ? log.map(l=>`<div class="list-item"><span style="font-size:12px;">${escapeHtml(l.text)}</span><span class="muted-small">${new Date(l.at).toLocaleString('fa-IR')}</span></div>`).join('') : '<p class="muted-small">لاگی ثبت نشده.</p>';
+}
+
+/* ---- backup ---- */
+const BACKUP_KEYS = ['forum-posts','reels-list','anime-requests','news-items','site-announcement','users-registry','payments-registry','support-tickets','site-settings','admin-log','episode-announcements','featured-anime'];
+async function adminBackupExport(){
+  const data = {};
+  for(const k of BACKUP_KEYS){ data[k] = await getVal(k, true, null); }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'anime-night-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  logAdminAction('دریافت نسخه پشتیبان');
+}
+function adminBackupImport(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      for(const k of BACKUP_KEYS){ if(k in data && data[k]!==null) await setVal(k, data[k], true); }
+      logAdminAction('بازیابی از فایل پشتیبان');
+      alert('✅ بازیابی انجام شد. صفحه رفرش می‌شه.');
+      location.reload();
+    }catch(e){ alert('فایل نامعتبره.'); }
+  };
+  reader.readAsText(file);
+  document.getElementById('admBackupFile').value = '';
+}
+
+async function adminClear(key){
+  if(!isAdmin) return;
+  if(!confirm('مطمئنی؟ همه‌ی این محتوا برای همه پاک میشه.')) return;
+  await setVal(key, [], true);
+  if(key==='forum-posts'){ posts=[]; renderPosts(); }
+  if(key==='reels-list'){ reels=[]; renderReels(); }
+  if(key==='anime-requests'){ requests=[]; renderRequests(); }
+  logAdminAction('پاک‌سازی '+key);
+  refreshAdminCounts();
+}
+async function adminDeletePost(i){
+  if(!isAdmin) return;
+  posts.splice(i,1);
+  await setVal('forum-posts', posts, true);
+  renderPosts();
+  refreshAdminCounts();
+}
+async function adminDeleteReel(i){
+  if(!isAdmin) return;
+  reels.splice(i,1);
+  await setVal('reels-list', reels, true);
+  renderReels();
+  refreshAdminCounts();
+}
+
+/* ---------- SUBSCRIPTION / PREMIUM MEMBERSHIP ---------- */
+const SUB_PLANS = {
+  monthly:  {label:'ماهانه',  months:1,  price:99000},
+  quarterly:{label:'سه‌ماهه', months:3,  price:249000},
+  yearly:   {label:'سالانه',  months:12, price:790000},
+};
+function isPremiumActive(profile){
+  return !!(profile && profile.subscription && profile.subscription.end && profile.subscription.end > Date.now());
+}
+async function refreshPremiumUI(){
+  const profile = await getVal('profile', false, {});
+  const box = document.getElementById('premiumStatusText');
+  if(!box) return;
+  if(isPremiumActive(profile)){
+    const end = new Date(profile.subscription.end);
+    box.innerHTML = `فعال ✅ — پلن ${escapeHtml(SUB_PLANS[profile.subscription.plan]?.label || profile.subscription.plan)} تا ${end.toLocaleDateString('fa-IR')}`;
+  } else {
+    box.textContent = 'اشتراک ویژه فعال نیست. امکانات ویژه (بدون تبلیغ، تم‌های اختصاصی، آواتار طلایی) قفل هستن.';
+  }
+}
+async function openSubOverlay(){
+  document.getElementById('subOverlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  const profile = await getVal('profile', false, {});
+  const curBox = document.getElementById('subCurrentBox');
+  if(isPremiumActive(profile)){
+    const end = new Date(profile.subscription.end);
+    curBox.innerHTML = `<div class="card" style="border-color:var(--neon);">
+      <h3>💎 اشتراک فعال</h3>
+      <p class="muted-small">پلن: ${escapeHtml(SUB_PLANS[profile.subscription.plan]?.label||'')}<br/>پایان: ${end.toLocaleDateString('fa-IR')}</p>
+      <button class="btn ghost" style="width:100%;" onclick="cancelSubscription()">لغو اشتراک</button>
+    </div>`;
+  } else {
+    curBox.innerHTML = '';
+  }
+  const plansBox = document.getElementById('subPlansBox');
+  plansBox.innerHTML = Object.entries(SUB_PLANS).map(([key,p])=>`
+    <div class="card">
+      <h3>${p.label}</h3>
+      <p class="muted-small">${p.price.toLocaleString('fa-IR')} تومان</p>
+      <button class="btn" style="width:100%;" onclick="openPayOverlay('${key}')">خرید اشتراک ${p.label}</button>
+    </div>`).join('');
+}
+function closeSubOverlay(){
+  document.getElementById('subOverlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+let pendingPlan = null;
+function openPayOverlay(planKey){
+  pendingPlan = planKey;
+  const p = SUB_PLANS[planKey];
+  document.getElementById('payPlanTitle').textContent = 'خرید پلن '+p.label;
+  document.getElementById('payPlanDesc').textContent = p.price.toLocaleString('fa-IR')+' تومان — '+p.months+' ماه';
+  document.getElementById('payError').textContent = '';
+  document.getElementById('payCardNumber').value='';
+  document.getElementById('payCardExp').value='';
+  document.getElementById('payCardCvv').value='';
+  document.getElementById('payOverlay').style.display = 'block';
+}
+function closePayOverlay(){
+  document.getElementById('payOverlay').style.display = 'none';
+}
+async function confirmMockPayment(){
+  const num = document.getElementById('payCardNumber').value.trim();
+  const exp = document.getElementById('payCardExp').value.trim();
+  const cvv = document.getElementById('payCardCvv').value.trim();
+  const errBox = document.getElementById('payError');
+  if(!num || !exp || !cvv){ errBox.textContent = 'همه‌ی فیلدها رو پر کن.'; return; }
+  // ⚡ TODO(backend): replace this mock block with a real call to your payment gateway API,
+  // e.g. POST /api/payments/checkout { plan, userId } -> redirect to gateway -> webhook confirms.
+  const plan = SUB_PLANS[pendingPlan];
+  const profile = await getVal('profile', false, {});
+  const now = Date.now();
+  const base = isPremiumActive(profile) ? profile.subscription.end : now;
+  profile.subscription = { plan: pendingPlan, start: profile.subscription?.start || now, end: base + plan.months*30*86400000 };
+  await setVal('profile', profile, false);
+
+  const payments = await getVal('payments-registry', true, []);
+  payments.push({email: profile.email||'', plan: plan.label, amount: plan.price, date: now});
+  await setVal('payments-registry', payments, true);
+
+  const account = await getVal('account', false, null);
+  if(account && account.uid){
+    const users = await getVal('users-registry', true, []);
+    const rec = users.find(u=>u.id===account.uid);
+    if(rec){ rec.hasSub = true; await setVal('users-registry', users, true); }
+  }
+
+  closePayOverlay();
+  await refreshPremiumUI();
+  await openSubOverlay();
+  alert('✅ پرداخت آزمایشی موفق بود، اشتراک فعال شد!');
+}
+async function cancelSubscription(){
+  if(!confirm('اشتراک لغو بشه؟')) return;
+  const profile = await getVal('profile', false, {});
+  profile.subscription = null;
+  await setVal('profile', profile, false);
+  await refreshPremiumUI();
+  closeSubOverlay();
+}
+
+/* ---------- PROFILE ---------- */
+async function loadProfile(){
+  const p = await getVal('profile', false, {name:'', email:''});
+  document.getElementById('profName').value = p.name || '';
+  document.getElementById('profEmail').value = p.email || '';
+  updateProfileDisplay(p);
+}
+function updateProfileDisplay(p){
+  document.getElementById('profAvatarLetter').textContent = p.name ? p.name[0].toUpperCase() : 'A';
+  document.getElementById('profDisplayName').textContent = p.name || 'پروفایل من';
+  document.getElementById('profDisplayEmail').textContent = p.email || 'عضو Anime Night';
+}
+async function saveProfile(){
+  const name = document.getElementById('profName').value.trim();
+  const email = document.getElementById('profEmail').value.trim();
+  await setVal('profile', {name,email}, false);
+  updateProfileDisplay({name,email});
+}
+
+/* ---------- INIT ---------- */
+(async function(){
+  await checkSession();
+  await loadSiteSettings();
+  populateYearFilter();
+  buildThemePanel();
+  themeIdx = await getVal('theme-idx', false, 0);
+  applyTheme(themeIdx);
+  const customAccent = await getVal('custom-accent', false, null);
+  if(customAccent){
+    document.documentElement.style.setProperty('--accent', customAccent);
+    document.documentElement.style.setProperty('--accent2', customAccent);
+    document.getElementById('customColorInput').value = customAccent;
+  }
+  await loadProfile();
+  await refreshPremiumUI();
+  await loadAnime();
+  await loadHistory();
+  await loadNews();
+  loadAnnouncement();
+  loadFeatured();
+  renderGameHscroll();
+  loadAnilistRow('RELEASING', 'airingHscroll');
+  loadAnilistRow('NOT_YET_RELEASED', 'upcomingHscroll');
+  loadCalendar();
+  await loadPosts();
+  await loadReels();
+  await loadRequests();
+  document.getElementById('statFav').textContent = animeList.length;
+  document.getElementById('statWins').textContent = await getVal('game-wins', false, 0);
+  document.getElementById('statPosts').textContent = await getVal('my-post-count', false, 0);
+  addChatBubble('سلام! من دستیار Anime Night ام 🤖 بگو دنبال چه‌جور انیمه‌ای هستی تا پیشنهاد بدم.','bot');
+})();
+
+</script>
+</body>
+</html>
